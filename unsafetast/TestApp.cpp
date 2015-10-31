@@ -42,7 +42,7 @@ void TestApp::onStep()
 
 void TestApp::onPlay()
 {
-	camera.lookAt(glm::vec3(5,5,1), glm::vec3(0,0,0), glm::vec3(0,1,0));
+	camera.lookAt(glm::vec3(10,1,10), glm::vec3(0,0,0), glm::vec3(0,1,0));
 	lightDir.setLight(glm::vec4(0, 0, 1, 1), glm::vec4(.7f, .7f, .7f, 1));
 
 	obj1.transform = glm::translate(glm::mat4(1), glm::vec3(5,5,5));
