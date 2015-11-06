@@ -29,14 +29,15 @@ void ColorPass::drawl(const LightDirection &l, const GameObject &go)
 	setUniform("Model", nsfw::UNIFORM::MAT4, glm::value_ptr(go.transform));
 	setUniform("Diffuse", nsfw::UNIFORM::TEX2, &(go.diffuse));
 
-	glm::float1 Fard = 100;
+	glm::float1 Fard = 10;
 	setUniform("Fard", nsfw::UNIFORM::FLO1, &Fard);
 
 	glBindVertexArray(*go.mesh);
 	glDrawElements(GL_TRIANGLES, *go.tris, GL_UNSIGNED_INT, 0);
 
+}
 
-}void ColorPass::drawc(const Camera &c, const GameObject &go)
+void ColorPass::drawc(const Camera &c, const GameObject &go)
 {
 	//Camera
 	setUniform("Projection", nsfw::UNIFORM::MAT4, glm::value_ptr(c.getProjection()));

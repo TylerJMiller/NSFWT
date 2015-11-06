@@ -29,10 +29,13 @@ void CompositePass::draw()
 	//GameObject
 	setUniform("Model", nsfw::UNIFORM::MAT4, glm::value_ptr(glm::mat4(1)));
 
-	nsfw::Asset<nsfw::ASSET::TEXTURE> fin = "FINAL";
+	nsfw::Asset<nsfw::ASSET::TEXTURE> fin = "Final";
 	nsfw::Asset<nsfw::ASSET::VAO> qm = "Quad";
 	nsfw::Asset<nsfw::ASSET::SIZE> qt = "Quad";
 	setUniform("Diffuse", nsfw::UNIFORM::TEX2, &fin);
+	setUniform("Normal", nsfw::UNIFORM::TEX2, &fin);
+	setUniform("Specular", nsfw::UNIFORM::TEX2, &fin);
+
 
 	glBindVertexArray(*qm);
 	glDrawElements(GL_TRIANGLES, *qt, GL_UNSIGNED_INT, 0);

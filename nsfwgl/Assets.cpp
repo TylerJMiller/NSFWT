@@ -266,7 +266,8 @@ bool nsfw::Assets::loadFBX(const char * name, const char * path)
 	{
 		auto t = file.getTextureByIndex(i);
 								//how do multiple textures
-		std::string n = name;	// n += t->name;
+		std::string n = t->name;// = name;
+		//n += t->name;
 		loadTexture(n.c_str(), t->path.c_str());
 	}
 
@@ -327,7 +328,7 @@ bool nsfw::Assets::loadOBJ(const char * name, const char * path)
 
 void nsfw::Assets::init()
 {
-	setINTERNAL(FBO,"FINAL",0);
+	setINTERNAL(FBO,"Final",0);
 	
 	//makeVAO("Cube",CubeVerts,24,CubeTris,36);
 	makeVAO("Quad",QuadVerts, 4, QuadTris,6);

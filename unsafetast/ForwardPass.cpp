@@ -30,7 +30,7 @@ void ForwardPass::draw(const Camera &c, const GameObject &go)
 	setUniform("Projection", nsfw::UNIFORM::MAT4, glm::value_ptr(c.getProjection()));
 	setUniform("View", nsfw::UNIFORM::MAT4, glm::value_ptr(c.getView()));
 	//TEST
-	setUniform("ProjectionView", nsfw::UNIFORM::MAT4, glm::value_ptr(c.getView() * c.getProjection()));
+	//setUniform("ProjectionView", nsfw::UNIFORM::MAT4, glm::value_ptr(c.getView() * c.getProjection()));
 
 	//GameObject
 	setUniform("Model", nsfw::UNIFORM::MAT4, glm::value_ptr(go.transform));
