@@ -121,10 +121,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GPass.cpp" />
+    <ClCompile Include="CompositePass.cpp" />
+    <ClCompile Include="ForwardPass.cpp" />
     <ClCompile Include="SafeApplication.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="GPass.h" />
+    <ClInclude Include="CompositePass.h" />
+    <ClInclude Include="ForwardPass.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="LightDirection.h" />
     <ClInclude Include="SafeApplication.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

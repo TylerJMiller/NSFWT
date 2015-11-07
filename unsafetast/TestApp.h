@@ -1,11 +1,12 @@
 #pragma once
-#include "ForwardPass.h"
 #include <nsfw.h>
+#include "ForwardPass.h"
 #include "Camera.h"
 #include "GameObject.h"
 #include "CompositePass.h"
 #include "ColorPass.h"
 #include "LightDirection.h"
+#include "ShadowPass.h"
 
 class TestApp : public nsfw::Application
 {
@@ -15,6 +16,8 @@ class TestApp : public nsfw::Application
 	CompositePass cp;
 	ColorPass clrp;
 	LightDirection lightDir;
+	ShadowPass sp;
+
 public:
 	void onStep();
 	void onPlay();

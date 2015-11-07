@@ -6,13 +6,12 @@
 #include "LightDirection.h"
 #include "Camera.h"
 
-class ColorPass : public nsfw::RenderPass
+class GPass : public nsfw::RenderPass
 {
 public:
 	void prep();
 
 	void post();
 
-	void drawl(const Camera &c, const LightDirection &l);
-	//void drawc(const Camera &c, const GameObject &go);
+	void draw(const LightDirection &l, const GameObject &go);
 };

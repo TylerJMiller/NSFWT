@@ -129,6 +129,7 @@
     <ClCompile Include="CompositePass.cpp" />
     <ClCompile Include="ForwardPass.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ShadowPass.cpp" />
     <ClCompile Include="TestApp.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +139,7 @@
     <ClInclude Include="ForwardPass.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="LightDirection.h" />
+    <ClInclude Include="ShadowPass.h" />
     <ClInclude Include="TestApp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

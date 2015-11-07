@@ -3,9 +3,10 @@
 
 void TestApp::onInit()
 {
-	nsfw::Assets::instance().loadShader("Basic", "../resources/shaders/basic.vert", "../resources/shaders/basic.frag");
-	nsfw::Assets::instance().loadShader("Light", "../resources/shaders/basiclight.vert", "../resources/shaders/basiclight.frag");
-	nsfw::Assets::instance().loadShader("White", "../resources/shaders/white.vert", "../resources/shaders/white.frag");
+	nsfw::Assets::instance().loadShader("Basic", "../resources/shaders/basicv.glsl", "../resources/shaders/basicf.glsl");
+	nsfw::Assets::instance().loadShader("Light", "../resources/shaders/lightv.glsl", "../resources/shaders/lightf.glsl");
+	nsfw::Assets::instance().loadShader("White", "../resources/shaders/whitev.glsl", "../resources/shaders/whitef.glsl");
+	nsfw::Assets::instance().loadShader("Compo", "../resources/shaders/compv.glsl", "../resources/shaders/compf.glsl");
 
 	auto &A = nsfw::Assets::instance();
 
@@ -13,24 +14,38 @@ void TestApp::onInit()
 
 	nsfw::Assets::instance().loadFBX("Spear", "../resources/models/soulspear.fbx");
 	nsfw::Assets::instance().loadFBX("Cube", "../resources/models/cube.fbx");
-	nsfw::Assets::instance().loadOBJ("Bunny", "../resources/models/bunny.obj");
+	//nsfw::Assets::instance().loadOBJ("Bunny", "../resources/models/bunny.obj");
 
-	const char *renderTargetNames[] = { "Final" };
-	unsigned renderTargetDepths[] = { GL_RGBA };
-	A.makeFBO("Final", 800, 600, 1, renderTargetNames, renderTargetDepths);
+	const char *renderTargetNames[] = { "Albedo", "Normal", "Position", "Depth" };
+	unsigned renderTargetDepths[] = { GL_RGBA, GL_RGBA, GL_RGBA, GL_DEPTH_COMPONENT };
+	A.makeFBO("GPass", 800, 600, 4, renderTargetNames, renderTargetDepths);
 
+	const char *lightTargetNames[] = { "LightColor" };
+	unsigned lightTargetDepths[] = { GL_RGBA };
+	A.makeFBO("LPass", 800, 600, 1, lightTargetNames, lightTargetDepths);
+
+	const char *shadowTargetNames[] = { "ShadowMap" };
+	unsigned shadowTargetDepths[] = { GL_DEPTH_COMPONENT };
+	A.makeFBO("SPass", 512, 512, 1, shadowTargetNames, shadowTargetDepths);
 }
 
 void TestApp::onStep()
 {
+	obj2.transform = glm::rotate(nsfw::Window::instance().getTime() * 100,glm::vec3(0.f,1.f,0.f));
+	//obj1.transform = glm::rotate(nsfw::Window::instance().getTime() * 10, glm::vec3(-1.f, 0.f, 0.f)) * glm::scale(10.f, 10.f, 1.f);
 	fp.prep();
 	fp.draw(camera, obj2);
 	fp.draw(camera, obj1);
 	fp.post();
+	
+	sp.prep();
+	sp.draw(lightDir, obj1);
+	sp.draw(lightDir, obj2);
+	sp.post();
 
 	clrp.prep();
-	clrp.drawc(camera, obj2);
-	clrp.drawc(camera, obj1);
+	clrp.drawl(camera, lightDir);
+	//clrp.drawl(camera, lightDir);
 	clrp.post();
 
 	cp.prep();
@@ -42,15 +57,15 @@ void TestApp::onStep()
 
 void TestApp::onPlay()
 {
-	camera.lookAt(glm::vec3(-5,0,0), glm::vec3(5,8,5), glm::vec3(0,1,0));
-	lightDir.setLight(glm::vec4(0, 0, 1, 1), glm::vec4(.7f, .7f, .7f, 1));
+	camera.lookAt(glm::vec3(4,4,4), glm::vec3(0,0,0), glm::vec3(0,1,0));
+	lightDir.setLight(glm::vec4(1.f, 1.f, 1.f, 0.f), glm::vec4(1.f, 1.f, 1.f, 1.f));
 
-	obj1.transform = glm::translate(glm::mat4(1), glm::vec3(5,5,5));
+	obj1.transform = glm::scale(10.f,1.f,10.f);
 	obj1.diffuse = "TestTexture";
-	obj1.mesh = "Bunny";
-	obj1.tris = "Bunny";
+	obj1.mesh = "Cube"; 
+	obj1.tris = "Cube";
 
-	obj2.transform = glm::mat4(2);
+
 	obj2.diffuse = "soulspear_diffuse.tga";
 	obj2.normal = "soulspear_normal.tga";
 	obj2.specular = "soulspear_specular.tga";
@@ -58,11 +73,15 @@ void TestApp::onPlay()
 	obj2.tris = "Spear";
 
 	fp.shader = "Basic";
-	fp.fbo = "Final";
+	fp.fbo = "GPass";
 
-	cp.shader = "Basic";
+	clrp.shader = "Light"; // Light
+	clrp.fbo = "LPass";
 
-	clrp.shader = "Light";
+	cp.shader = "Compo";
+
+	sp.shader	= "White";
+	sp.fbo		= "SPass";
 }
 
 void TestApp::onTerm()

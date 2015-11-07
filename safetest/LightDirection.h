@@ -1,6 +1,6 @@
 #pragma once
-#define GLM_SWIZZLE
 #include "glm\ext.hpp"
+#include "glm\core\type_vec4.hpp"
 
 class LightDirection
 {	
@@ -9,7 +9,8 @@ public:
 
 	void setLight(glm::vec4 d, glm::vec4 c)
 	{
-		direction = glm::normalize(d);
+		glm::vec3 cxyz = glm::vec3(glm::normalize(d).x, glm::normalize(d).y, glm::normalize(d).z);
+		direction = glm::vec4(cxyz,0);
 		color = c;
 	}
 
