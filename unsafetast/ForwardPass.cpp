@@ -40,3 +40,5 @@ void ForwardPass::draw(const Camera &c, const GameObject &go)
 	glDrawElements(GL_TRIANGLES, *go.tris, GL_UNSIGNED_INT, 0);
 
 }
+
+//draw particle

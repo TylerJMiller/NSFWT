@@ -39,7 +39,6 @@ void ColorPass::drawl(const Camera &c, const LightDirection &l)
 	nsfw::Asset<nsfw::ASSET::TEXTURE> Shadow = "ShadowMap";
 	setUniform("Shadow", nsfw::UNIFORM::TEX2, &Shadow, 2);
 
-
 	mat4 clpToUV = mat4(.5f, 0, 0, 0,
 						0, .5f, 0, 0,
 						0, 0, .5f, 0,

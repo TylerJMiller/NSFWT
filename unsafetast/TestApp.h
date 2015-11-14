@@ -7,9 +7,11 @@
 #include "ColorPass.h"
 #include "LightDirection.h"
 #include "ShadowPass.h"
+#include "Emitter.h"
 
 class TestApp : public nsfw::Application
 {
+	Emitter pe;
 	Camera camera;
 	GameObject obj1, obj2;
 	ForwardPass fp;

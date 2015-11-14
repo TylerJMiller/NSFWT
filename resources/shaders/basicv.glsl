@@ -16,7 +16,7 @@ void main()
 	
 	vTexCoord = TexCoord;
 	
-	vNormal     = View * Model * aNormal;
+	vNormal     = normalize(View * Model * aNormal);
 	vPosition   = View * Model * Position;
 	gl_Position = Projection * View * Model * Position;
 }

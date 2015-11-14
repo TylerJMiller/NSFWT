@@ -1,9 +1,9 @@
 #version 410
 in vec2 vTexCoord;
+in vec4 vDirection;
 
 out vec4 FragColor;
 
-in vec4 vDirection;
 uniform vec4 Color;
 
 uniform sampler2D Normal; // GPass Normals
@@ -15,23 +15,20 @@ uniform mat4 LightView;
 
 uniform mat4 View;
 
-uniform mat4 clipToUV = mat4(.5f,  0 ,  0,   0,
-							  0,  .5f,  0,   0,
-							  0,   0,  .5f,  0,
-							 .5f, .5f, .5f,  1.f);
-
+uniform mat4 clipToUV;
 
 void main()
 {
 	vec4 normal 	= texture(Normal, vTexCoord.xy);
-	vec4 position 	= vec4(texture(Position, vTexCoord.xy).xyz,1);
+	vec4 position 	= texture(Position, vTexCoord.xy);
 
+	// shadowCoord isn't sampling correctly
 	vec4 shadowCoord = clipToUV * LightProjection * LightView * inverse(View) * position; // into worldspace
-	
+
 	float visibility = 1.f;
+	vec4 shadowMap = texture(Shadow, shadowCoord.xy);
 	
-	
-	if(texture(Shadow,shadowCoord.xy).z < shadowCoord.z)
+	if(shadowMap.z < shadowCoord.z)
 	{
 		visibility = 0;
 	}
@@ -40,10 +37,15 @@ void main()
 
 	FragColor = visibility*d*Color;
 	
+	//FragColor = vec4(shadowCoord.xyz,1);
+	
+	//FragColor = shadowMap;
+	
+	//FragColor = texture(Shadow, vTexCoord.xy); // FBOs are okay,
+	
 	//FragColor = shadowCoord;
 	//FragColor = vec4(texture(Shadow,shadowCoord.xy).zzz,1);
 	}
-
 
 /*
 	Take the position and move it into light space

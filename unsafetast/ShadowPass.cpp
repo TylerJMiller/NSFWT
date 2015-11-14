@@ -25,7 +25,6 @@ void ShadowPass::post()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-
 void ShadowPass::draw(const LightDirection & l, const GameObject & go)
 {
 
@@ -36,4 +35,3 @@ void ShadowPass::draw(const LightDirection & l, const GameObject & go)
 	glBindVertexArray(*go.mesh);
 	glDrawElements(GL_TRIANGLES, *go.tris, GL_UNSIGNED_INT, 0);
 }
-

@@ -127,6 +127,7 @@
   <ItemGroup>
     <ClCompile Include="ColorPass.cpp" />
     <ClCompile Include="CompositePass.cpp" />
+    <ClCompile Include="Emitter.cpp" />
     <ClCompile Include="ForwardPass.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ShadowPass.cpp" />
@@ -136,9 +137,11 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ColorPass.h" />
     <ClInclude Include="CompositePass.h" />
+    <ClInclude Include="Emitter.h" />
     <ClInclude Include="ForwardPass.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="LightDirection.h" />
+    <ClInclude Include="Particle.h" />
     <ClInclude Include="ShadowPass.h" />
     <ClInclude Include="TestApp.h" />
   </ItemGroup>

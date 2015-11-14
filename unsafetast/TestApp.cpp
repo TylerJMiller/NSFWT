@@ -36,6 +36,7 @@ void TestApp::onStep()
 	fp.prep();
 	fp.draw(camera, obj2);
 	fp.draw(camera, obj1);
+	//draw particles
 	fp.post();
 	
 	sp.prep();
@@ -52,18 +53,17 @@ void TestApp::onStep()
 	cp.draw();
 	cp.post();
 
-
 }
 
 void TestApp::onPlay()
 {
-	camera.lookAt(glm::vec3(4,4,4), glm::vec3(0,0,0), glm::vec3(0,1,0));
+	camera.lookAt(glm::vec3(-3,3,3), glm::vec3(0,1,0), glm::vec3(0,1,0));
 	lightDir.setLight(glm::vec4(1.f, 1.f, 1.f, 0.f), glm::vec4(1.f, 1.f, 1.f, 1.f));
 
-	obj1.transform = glm::scale(10.f,1.f,10.f);
+	obj1.transform = glm::rotate(90.f,glm::vec3(1.f,0.f,0.f))*glm::scale(10.f,10.f,1.f);
 	obj1.diffuse = "TestTexture";
-	obj1.mesh = "Cube"; 
-	obj1.tris = "Cube";
+	obj1.mesh = "Quad"; 
+	obj1.tris = "Quad";
 
 
 	obj2.diffuse = "soulspear_diffuse.tga";
@@ -76,7 +76,7 @@ void TestApp::onPlay()
 	fp.fbo = "GPass";
 
 	clrp.shader = "Light"; // Light
-	clrp.fbo = "LPass";
+	clrp.fbo	= "LPass";
 
 	cp.shader = "Compo";
 

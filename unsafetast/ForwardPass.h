@@ -13,4 +13,6 @@ public:
 	void post();
 
 	void draw(const Camera &c, const GameObject &go);
+
+	//draw particle
 };
