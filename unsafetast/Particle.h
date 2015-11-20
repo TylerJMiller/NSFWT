@@ -4,11 +4,10 @@
 class Particle
 {
 public:
+	glm::vec4 position;
+	glm::vec4 velocity;
 	
-	vec4 position;
-	vec4 velocity;
-
-	float size;
+	float size, maxSize;
 
 	float curTime;
 	float maxTime;

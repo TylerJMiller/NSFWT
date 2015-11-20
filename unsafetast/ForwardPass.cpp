@@ -41,4 +41,26 @@ void ForwardPass::draw(const Camera &c, const GameObject &go)
 
 }
 
+void ForwardPass::draw(const Camera &c, const Emitter &e)
+{
+	for (unsigned int i = 0; i < e.particles.size(); i++)
+	{
+		Particle tPar = e.particles[i];
+		if (tPar.active)
+		{
+			setUniform("Projection", nsfw::UNIFORM::MAT4, glm::value_ptr(c.getProjection()));
+			setUniform("View", nsfw::UNIFORM::MAT4, glm::value_ptr(c.getView()));
+
+			setUniform("Model", nsfw::UNIFORM::MAT4, glm::value_ptr(
+				//glm::scale(tPar.size, tPar.size, tPar.size) * 
+				glm::translate(e.baseParticle.transform,tPar.position.xyz())));
+			
+			setUniform("Diffuse", nsfw::UNIFORM::TEX2, &(e.baseParticle.diffuse));
+
+			glBindVertexArray(*e.baseParticle.mesh);
+			glDrawElements(GL_TRIANGLES, *e.baseParticle.tris, GL_UNSIGNED_INT, 0);
+		}
+	}
+}
+
 //draw particle

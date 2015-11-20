@@ -2,18 +2,23 @@
 #include "Particle.h"
 #include "nsfw.h"
 #include "glm\ext.hpp"
+#include "glm\gtc\random.hpp"
 #include "GameObject.h"
 
 class Emitter
 {
+
 public:
-
-	std::vector<Particle> particles;
-	float emitFreq;
-	GameObject bp;
-
-	void emit();
 	void update(float ftime);
-	//void setBase(mat4 t)
-	void setParticles(int tcount, float tFreq, vec4 tpos, vec4 tvelocity, float tlifespan, float tsize);
+	std::vector<Particle> particles;
+	//all time is in frames
+	//change to seconds after implementation
+	float emitFreq, emitTimer;
+	GameObject baseParticle;
+
+	void emit(float ftime);
+	void setBase(const char * tdiffuse, const char * tmesh, const char * ttris);
+	//void setBase(const char * tdiffuse, const char * tnormal, const char * tmesh, const char * ttris);
+	void setBase(const char * tdiffuse, const char * tnormal, const char * tspecular, const char * tmesh, const char * ttris);
+	void setParticles(int tcount, float tFreq, float tlifespan, float tsize);
 };

@@ -27,15 +27,20 @@ void TestApp::onInit()
 	const char *shadowTargetNames[] = { "ShadowMap" };
 	unsigned shadowTargetDepths[] = { GL_DEPTH_COMPONENT };
 	A.makeFBO("SPass", 512, 512, 1, shadowTargetNames, shadowTargetDepths);
+	nsfw::Window::instance().setDelta();
 }
 
 void TestApp::onStep()
 {
+	
+	pe.emit(nsfw::Window::instance().getDeltaTime());
+
 	obj2.transform = glm::rotate(nsfw::Window::instance().getTime() * 100,glm::vec3(0.f,1.f,0.f));
 	//obj1.transform = glm::rotate(nsfw::Window::instance().getTime() * 10, glm::vec3(-1.f, 0.f, 0.f)) * glm::scale(10.f, 10.f, 1.f);
 	fp.prep();
-	fp.draw(camera, obj2);
-	fp.draw(camera, obj1);
+	//fp.draw(camera, obj2);
+	//fp.draw(camera, obj1);
+	fp.draw(camera, pe);
 	//draw particles
 	fp.post();
 	
@@ -46,7 +51,6 @@ void TestApp::onStep()
 
 	clrp.prep();
 	clrp.drawl(camera, lightDir);
-	//clrp.drawl(camera, lightDir);
 	clrp.post();
 
 	cp.prep();
@@ -59,6 +63,12 @@ void TestApp::onPlay()
 {
 	camera.lookAt(glm::vec3(-3,3,3), glm::vec3(0,1,0), glm::vec3(0,1,0));
 	lightDir.setLight(glm::vec4(1.f, 1.f, 1.f, 0.f), glm::vec4(1.f, 1.f, 1.f, 1.f));
+	
+	//PARTICLES
+	pe.setParticles(20, 0.1f, 2, 1);
+	//MASTER PARTICLE
+	pe.setBase("TestTexture", "Quad", "Quad");
+
 
 	obj1.transform = glm::rotate(90.f,glm::vec3(1.f,0.f,0.f))*glm::scale(10.f,10.f,1.f);
 	obj1.diffuse = "TestTexture";
@@ -82,6 +92,7 @@ void TestApp::onPlay()
 
 	sp.shader	= "White";
 	sp.fbo		= "SPass";
+	nsfw::Window::instance().setDelta();
 }
 
 void TestApp::onTerm()

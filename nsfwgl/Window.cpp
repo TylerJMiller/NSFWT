@@ -10,10 +10,14 @@ void nsfw::Window::init(unsigned width, unsigned height, const char *title)
 	window = glfwCreateWindow(width, height, title, nullptr, nullptr);
 	glfwMakeContextCurrent(window);
 	ogl_LoadFunctions();
+	time = 0;
+	last = 0;
 }
 
 void nsfw::Window::step()
 {
+	last = time;
+	time = glfwGetTime();
 	glfwSwapBuffers(window);
 	glfwPollEvents();
 }
@@ -25,9 +29,21 @@ void nsfw::Window::term()
 
 }
 
+void nsfw::Window::setDelta()
+{
+	glfwGetTime();
+	time = 0;
+	last = 0;
+}
+
 float nsfw::Window::getTime() const
 {
 	return glfwGetTime();
+}
+
+float nsfw::Window::getDeltaTime() const
+{
+	return time - last;
 }
 
 bool nsfw::Window::getKey(unsigned k) const

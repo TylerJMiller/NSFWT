@@ -1,36 +1,86 @@
 #include "Emitter.h"
 
 
-void Emitter::emit()
+void Emitter::emit(float ftime)
 {
+	update(ftime);
+	emitTimer += ftime;
+	if (emitTimer >= emitFreq)
+	{
+		emitTimer = 0;
+		//CREATE NEW PARTICLE
+		//search for inactive particle and create new one
+		for (unsigned int i = 0; i < particles.size(); i++)
+		{
+			Particle tPar = particles[i];
+			if (!tPar.active)
+			{
+				tPar.size = (tPar.curTime / tPar.maxTime) * tPar.maxSize;
+				tPar.active = true;
+				tPar.curTime = tPar.maxTime;
+				tPar.velocity = vec4(0.05f, 0.05f, 0, 0);
+				tPar.velocity = (glm::normalize(vec4(glm::linearRand(-1.f, 1.f), glm::linearRand(-1.f, 1.f), glm::linearRand(-1.f, 1.f), 1)));
+				tPar.position = ftime * tPar.velocity;
+				particles[i] = tPar;
+				
+				return;
+			}
+		}
+	}
 
 }
 
 void Emitter::update(float ftime)
 {
-	for (int i = 0; i < particles.size(); i++)
+	//float ftime = 1;
+	for (unsigned int i = 0; i < particles.size(); i++)
 	{
 		Particle tPar = particles[i];
 		if (tPar.active)
 		{
+			tPar.size = (tPar.curTime / tPar.maxTime) * tPar.maxSize;
 			tPar.position += ftime * tPar.velocity;
-			tPar.curTime += ftime;
-			if (tPar.curTime > tPar.maxTime)
+			tPar.curTime -= ftime;
+			if (tPar.curTime <= 0)
 			{
 				tPar.active = false;
 			}
 
 			particles[i] = tPar;
 		}
-		else
-		{
-			return;
-		}
 	}
 	
 }
 
-void Emitter::setParticles(int tcount, float tFreq, vec4 tpos, vec4 tvelocity, float tlifespan, float tsize)
+void Emitter::setBase(const char * tdiffuse, const char * tmesh, const char * ttris)
+{
+	baseParticle.transform = glm::mat4(1);
+	baseParticle.diffuse = tdiffuse;
+	baseParticle.mesh = tmesh;
+	baseParticle.tris = ttris;
+}
+
+//void Emitter::setBase(const char * tdiffuse, const char * tnormal, const char * tmesh, const char * ttris)
+//{
+//	bp.diffuse = tdiffuse;
+//	bp.normal = tnormal;
+//	bp.mesh = tmesh;
+//	bp.tris = ttris;
+//
+//}
+
+void Emitter::setBase(const char * tdiffuse, const char * tnormal, const char * tspecular, const char * tmesh, const char * ttris)
+{
+	baseParticle.transform = glm::mat4(1);
+	baseParticle.diffuse = tdiffuse;
+	baseParticle.normal = tnormal;
+	baseParticle.specular = tspecular;
+	baseParticle.mesh = tmesh;
+	baseParticle.tris = ttris;
+
+}
+
+void Emitter::setParticles(int tcount, float tFreq, float tlifespan, float tsize)
 {
 	if (tcount < 1)
 	{
@@ -38,18 +88,18 @@ void Emitter::setParticles(int tcount, float tFreq, vec4 tpos, vec4 tvelocity, f
 		return;
 	}
 	emitFreq = tFreq;
+	emitTimer = emitFreq;
 	for (int i = 0; i < tcount; i++)
 	{
 		Particle tpar;
 
-		tpar.position = tpos;
+		tpar.position = vec4(0);
 		tpar.maxTime = tlifespan;
-		tpar.size = tsize;
+		tpar.maxSize = tsize;
 		tpar.active = false;
-		tpar.velocity = tvelocity;
 
 		particles.emplace_back(tpar);
 	}
 
 	std::cerr << "Particles created: " << tcount << std::endl;
-}
+}	//
