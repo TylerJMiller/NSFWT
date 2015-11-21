@@ -155,6 +155,7 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Assets.h" />
+    <ClInclude Include="ParticleVertex.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="nsfw.h" />
     <ClInclude Include="render.h" />

@@ -20,14 +20,14 @@ void Emitter::emit(float ftime)
 				tPar.curTime = tPar.maxTime;
 				tPar.velocity = vec4(0.05f, 0.05f, 0, 0);
 				tPar.velocity = (glm::normalize(vec4(glm::linearRand(-1.f, 1.f), glm::linearRand(-1.f, 1.f), glm::linearRand(-1.f, 1.f), 1)));
-				tPar.position = ftime * tPar.velocity;
+				//tPar.position = ftime * tPar.velocity;
+				tPar.position = vec4(0);
 				particles[i] = tPar;
 				
 				return;
 			}
 		}
 	}
-
 }
 
 void Emitter::update(float ftime)
@@ -69,16 +69,15 @@ void Emitter::setBase(const char * tdiffuse, const char * tmesh, const char * tt
 //
 //}
 
-void Emitter::setBase(const char * tdiffuse, const char * tnormal, const char * tspecular, const char * tmesh, const char * ttris)
-{
-	baseParticle.transform = glm::mat4(1);
-	baseParticle.diffuse = tdiffuse;
-	baseParticle.normal = tnormal;
-	baseParticle.specular = tspecular;
-	baseParticle.mesh = tmesh;
-	baseParticle.tris = ttris;
-
-}
+//void Emitter::setBase(const char * tdiffuse, const char * tnormal, const char * tspecular, const char * tmesh, const char * ttris)
+//{
+//	baseParticle.transform = glm::mat4(1);
+//	baseParticle.diffuse = tdiffuse;
+//	baseParticle.normal = tnormal;
+//	baseParticle.specular = tspecular;
+//	baseParticle.mesh = tmesh;
+//	baseParticle.tris = ttris;
+//}
 
 void Emitter::setParticles(int tcount, float tFreq, float tlifespan, float tsize)
 {
@@ -89,6 +88,7 @@ void Emitter::setParticles(int tcount, float tFreq, float tlifespan, float tsize
 	}
 	emitFreq = tFreq;
 	emitTimer = emitFreq;
+	particles.reserve(tcount);
 	for (int i = 0; i < tcount; i++)
 	{
 		Particle tpar;

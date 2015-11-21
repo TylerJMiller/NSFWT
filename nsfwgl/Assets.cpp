@@ -86,7 +86,50 @@ bool nsfw::Assets::makeVAO(const char * name, const struct Vertex *verts, unsign
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+	setINTERNAL(GL_HANDLE_TYPE::VBO, name, vbo);
+	setINTERNAL(GL_HANDLE_TYPE::IBO, name, ibo);
+	setINTERNAL(GL_HANDLE_TYPE::VAO, name, vao);
+	setINTERNAL(GL_HANDLE_TYPE::SIZE, name, size);
 
+	return false;
+}
+
+bool nsfw::Assets::makeVAO(const char *name, const struct ParticleVertex *parts, unsigned psize)	// Not yet completed, reference only
+{
+	ASSET_LOG(GL_HANDLE_TYPE::VBO);		//array that stores vertices
+	ASSET_LOG(GL_HANDLE_TYPE::IBO);		//array that stores which vertices make up triangles
+	ASSET_LOG(GL_HANDLE_TYPE::VAO);		//association between vbo and ibo
+	ASSET_LOG(GL_HANDLE_TYPE::SIZE);	//how many triangles does vao hold
+
+	unsigned vbo, ibo, vao, size = psize;
+
+	glGenVertexArrays(1, &vao);
+	glGenBuffers(1, &vbo);
+	glGenBuffers(1, &ibo);
+
+	glBindVertexArray(vao);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+
+	glBufferData(GL_ARRAY_BUFFER, psize * sizeof(ParticleVertex), parts, GL_STATIC_DRAW);			//vbo
+	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, size *sizeof(ParticleVertex), parts, GL_STATIC_DRAW);	//ibo
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, size *sizeof(unsigned), parts, GL_STATIC_DRAW);	//ibo
+	
+	//vao
+	glEnableVertexAttribArray(0);	//position
+	glEnableVertexAttribArray(1);	//velocity
+	glEnableVertexAttribArray(2);	//lifetime
+	glEnableVertexAttribArray(3);	//lifespan
+
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::POSITION);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::VELOCITY);
+	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::LIFETIME);
+	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::LIFESPAN);
+
+	//unbinding buffers
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	setINTERNAL(GL_HANDLE_TYPE::VBO, name, vbo);
 	setINTERNAL(GL_HANDLE_TYPE::IBO, name, ibo);
@@ -219,6 +262,62 @@ bool nsfw::Assets::loadShader(const char * name, const char * vpath, const char 
 
 	//int success = GL_FALSE;
 	//glGetProgramiv(shader, GL_LINK_STATUS, &success);
+
+
+	setINTERNAL(GL_HANDLE_TYPE::SHADER, name, shader);
+	return true;
+}
+
+bool nsfw::Assets::loadShader(const char * name, const char * vpath, const char * gpath, const char * fpath)
+{
+	ASSET_LOG(GL_HANDLE_TYPE::SHADER);
+	GLuint shader = glCreateProgram();;
+
+	std::ifstream vin(vpath);
+	std::ifstream gin(gpath);
+	std::ifstream fin(fpath);
+
+	std::string vcontents((std::istreambuf_iterator<char>(vin)), std::istreambuf_iterator<char>());
+	std::string gcontents((std::istreambuf_iterator<char>(gin)), std::istreambuf_iterator<char>());
+	std::string fcontents((std::istreambuf_iterator<char>(fin)), std::istreambuf_iterator<char>());
+
+	GLuint vShader = glCreateShader(GL_VERTEX_SHADER);
+	GLuint gShader = glCreateShader(GL_GEOMETRY_SHADER);
+	GLuint fShader = glCreateShader(GL_FRAGMENT_SHADER);
+
+	const char *vs = vcontents.c_str();
+	const char *gs = gcontents.c_str();
+	const char *fs = fcontents.c_str();
+
+	glShaderSource(vShader, 1, &vs, 0);
+	glShaderSource(gShader, 1, &gs, 0);
+	glShaderSource(fShader, 1, &fs, 0);
+
+	glCompileShader(vShader);
+	glCompileShader(gShader);
+	glCompileShader(fShader);
+
+	glAttachShader(shader, vShader);
+	glAttachShader(shader, gShader);
+	glAttachShader(shader, fShader);
+
+	glLinkProgram(shader);
+	int success = GL_FALSE;
+	glGetProgramiv(shader, GL_LINK_STATUS, &success);
+	if (success == GL_FALSE)
+	{
+		int infolength = 0;
+		glGetProgramiv(shader, GL_INFO_LOG_LENGTH, &infolength);
+		char* infolog = new char[infolength];
+		glGetProgramInfoLog(shader, infolength, 0, infolog);
+		printf_s("[ERROR] FAILED TO LINK SHADER ", name, "\n");
+		printf_s(infolog);
+		delete[] infolog;
+	}
+
+	glDeleteShader(vShader);
+	glDeleteShader(gShader);
+	glDeleteShader(fShader);
 
 
 	setINTERNAL(GL_HANDLE_TYPE::SHADER, name, shader);

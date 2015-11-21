@@ -34,3 +34,4 @@
 #include "render.h"
 #include "Application.h"
 #include "Vertex.h"
+#include "ParticleVertex.h"

@@ -65,16 +65,14 @@ void TestApp::onPlay()
 	lightDir.setLight(glm::vec4(1.f, 1.f, 1.f, 0.f), glm::vec4(1.f, 1.f, 1.f, 1.f));
 	
 	//PARTICLES
-	pe.setParticles(20, 0.1f, 2, 1);
+	pe.setParticles(30, 0.1f, 2, 1);
 	//MASTER PARTICLE
 	pe.setBase("TestTexture", "Quad", "Quad");
-
 
 	obj1.transform = glm::rotate(90.f,glm::vec3(1.f,0.f,0.f))*glm::scale(10.f,10.f,1.f);
 	obj1.diffuse = "TestTexture";
 	obj1.mesh = "Quad"; 
 	obj1.tris = "Quad";
-
 
 	obj2.diffuse = "soulspear_diffuse.tga";
 	obj2.normal = "soulspear_normal.tga";
@@ -92,7 +90,7 @@ void TestApp::onPlay()
 
 	sp.shader	= "White";
 	sp.fbo		= "SPass";
-	nsfw::Window::instance().setDelta();
+	nsfw::Window::instance().getDeltaTime();
 }
 
 void TestApp::onTerm()
