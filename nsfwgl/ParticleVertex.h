@@ -7,10 +7,11 @@ namespace nsfw
 {
 	struct ParticleVertex
 	{
+		ParticleVertex() : lifetime(1), lifespan(0) {}
+
 		glm::vec4 position;
 		glm::vec4 velocity;
-		float lifetime;
-		float lifespan;
+		float lifetime, lifespan;
 
 		enum OFFSETS
 		{
@@ -19,6 +20,6 @@ namespace nsfw
 			LIFETIME = VELOCITY + sizeof(float),
 			LIFESPAN = LIFETIME + sizeof(float)
 		};
-	};
 
+	};
 }

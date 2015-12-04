@@ -16,7 +16,6 @@ const char *nsfw::TYPE_NAMES[eSIZE + 1] = { "NONE","vao","ibo","vbo","tri-size",
 #define ASSET_LOG(type) do {} while (0)
 #endif
 
-
 nsfw::GL_HANDLE nsfw::Assets::getVERIFIED(const AssetKey &key) const
 {
 #ifdef _DEBUG
@@ -101,7 +100,7 @@ bool nsfw::Assets::makeVAO(const char *name, const struct ParticleVertex *parts,
 	ASSET_LOG(GL_HANDLE_TYPE::VAO);		//association between vbo and ibo
 	ASSET_LOG(GL_HANDLE_TYPE::SIZE);	//how many triangles does vao hold
 
-	unsigned vbo, ibo, vao, size = psize;
+	unsigned vbo, ibo, vao;
 
 	glGenVertexArrays(1, &vao);
 	glGenBuffers(1, &vbo);
@@ -113,7 +112,7 @@ bool nsfw::Assets::makeVAO(const char *name, const struct ParticleVertex *parts,
 
 	glBufferData(GL_ARRAY_BUFFER, psize * sizeof(ParticleVertex), parts, GL_STATIC_DRAW);			//vbo
 	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, size *sizeof(ParticleVertex), parts, GL_STATIC_DRAW);	//ibo
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, size *sizeof(unsigned), parts, GL_STATIC_DRAW);	//ibo
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, psize *sizeof(unsigned), parts, GL_STATIC_DRAW);	//ibo
 	
 	//vao
 	glEnableVertexAttribArray(0);	//position
@@ -134,7 +133,51 @@ bool nsfw::Assets::makeVAO(const char *name, const struct ParticleVertex *parts,
 	setINTERNAL(GL_HANDLE_TYPE::VBO, name, vbo);
 	setINTERNAL(GL_HANDLE_TYPE::IBO, name, ibo);
 	setINTERNAL(GL_HANDLE_TYPE::VAO, name, vao);
-	setINTERNAL(GL_HANDLE_TYPE::SIZE, name, size);
+	setINTERNAL(GL_HANDLE_TYPE::SIZE, name, psize);
+
+	return false;
+}
+
+bool nsfw::Assets::makePVAO(const char *name, const struct ParticleVertex *parts, unsigned psize)	// Not yet completed, reference only
+{
+	ASSET_LOG(GL_HANDLE_TYPE::VBO);		//array that stores vertices
+	ASSET_LOG(GL_HANDLE_TYPE::IBO);		//array that stores which vertices make up triangles
+	ASSET_LOG(GL_HANDLE_TYPE::VAO);		//association between vbo and ibo
+	ASSET_LOG(GL_HANDLE_TYPE::SIZE);	//how many triangles does vao hold
+
+	unsigned vbo, ibo, vao;
+
+	glGenVertexArrays(2, &vao);
+	glGenBuffers(1, &vbo);
+	glGenBuffers(1, &ibo);
+
+	glBindVertexArray(vao);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+
+	glBufferData(GL_ARRAY_BUFFER, psize * sizeof(ParticleVertex), parts, GL_STATIC_DRAW);			//vbo
+																									//glBufferData(GL_ELEMENT_ARRAY_BUFFER, size *sizeof(ParticleVertex), parts, GL_STATIC_DRAW);	//ibo
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, psize *sizeof(ParticleVertex), parts, GL_STATIC_DRAW);	//ibo
+																							//vao
+	glEnableVertexAttribArray(0);	//position
+	glEnableVertexAttribArray(1);	//velocity
+	glEnableVertexAttribArray(2);	//lifetime
+	glEnableVertexAttribArray(3);	//lifespan
+
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::POSITION);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::VELOCITY);
+	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::LIFETIME);
+	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::LIFESPAN);
+
+	//unbinding buffers
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	setINTERNAL(GL_HANDLE_TYPE::VBO, name, vbo);
+	setINTERNAL(GL_HANDLE_TYPE::IBO, name, ibo);
+	setINTERNAL(GL_HANDLE_TYPE::VAO, name, vao);
+	setINTERNAL(GL_HANDLE_TYPE::SIZE, name, psize);
 
 	return false;
 }
@@ -215,6 +258,47 @@ bool nsfw::Assets::loadTexture(const char * name, const char * path)
 	makeTexture(name, w, h, d , p);
 	stbi_image_free(p);
 	return true;
+}
+
+bool nsfw::Assets::loadShader(const char * name, unsigned int type, const char * path)
+{
+	ASSET_LOG(GL_HANDLE_TYPE::SHADER);
+	GLuint shader = glCreateProgram();;
+
+	std::ifstream in(path);
+
+	std::string contents((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+
+	GLuint tShader = glCreateShader(type);
+	
+	const char *s = contents.c_str();
+
+	glShaderSource(tShader, 1, &s, 0);
+
+	glCompileShader(tShader);
+
+	glAttachShader(shader, tShader);
+
+	glLinkProgram(shader);
+	int success = GL_FALSE;
+
+	glGetProgramiv(shader, GL_LINK_STATUS, &success);
+	if (success == GL_FALSE)
+	{
+		int infolength = 0;
+		glGetProgramiv(shader, GL_INFO_LOG_LENGTH, &infolength);
+		char* infolog = new char[infolength];
+		glGetProgramInfoLog(shader, infolength, 0, infolog);
+		printf_s("[ERROR] FAILED TO LINK SHADER ", name, "\n");
+		printf_s(infolog);
+		delete[] infolog;
+	}
+
+	glDeleteShader(tShader);
+
+	setINTERNAL(GL_HANDLE_TYPE::SHADER, name, shader);
+
+	return false;
 }
 
 bool nsfw::Assets::loadShader(const char * name, const char * vpath, const char * fpath)
@@ -319,7 +403,6 @@ bool nsfw::Assets::loadShader(const char * name, const char * vpath, const char 
 	glDeleteShader(gShader);
 	glDeleteShader(fShader);
 
-
 	setINTERNAL(GL_HANDLE_TYPE::SHADER, name, shader);
 	return true;
 }
@@ -359,7 +442,6 @@ bool nsfw::Assets::loadFBX(const char * name, const char * path)
 		delete[]verts;
 		delete[]tris;
 	}
-
 
 	for (int i = 0; i < file.getTextureCount(); i++)
 	{

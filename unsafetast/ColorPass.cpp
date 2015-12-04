@@ -44,20 +44,18 @@ void ColorPass::drawl(const Camera &c, const LightDirection &l)
 						0, 0, .5f, 0,
 						.5f, .5f, .5f, 1.f);
 	setUniform("clipToUV", nsfw::UNIFORM::MAT4, glm::value_ptr(clpToUV));
+
 	//Light
 	//setUniform("Projection", nsfw::UNIFORM::MAT4, glm::value_ptr(l.getProjection()));
 	
 	//GameObject
 	//setUniform("Model", nsfw::UNIFORM::MAT4, glm::value_ptr(go.transform));
-	
 
 	//glm::float1 Fard = 10;
 	//setUniform("Fard", nsfw::UNIFORM::FLO1, &Fard);
 
-
 	nsfw::Asset<nsfw::ASSET::VAO> qm = "Quad";
 	nsfw::Asset<nsfw::ASSET::SIZE> qt = "Quad";
-
 
 	glBindVertexArray(*qm);
 	glDrawElements(GL_TRIANGLES, *qt, GL_UNSIGNED_INT, 0);

@@ -108,6 +108,9 @@ namespace nsfw
 		//Particle VAO
 		bool makeVAO(const char *name, const struct ParticleVertex *parts, unsigned psize);
 
+		//Particle VAO
+		bool makePVAO(const char *name, const struct ParticleVertex *parts, unsigned psize);
+
 		// should call makeTexture nTextures number of times
 		bool makeFBO(const char *name, unsigned w, unsigned h, unsigned nTextures, const char *names[], const unsigned depths[]);
 
@@ -116,6 +119,9 @@ namespace nsfw
 
 		// should load a texture from a file, use makeTexture to alloc, and then copy filedata in
 		bool loadTexture(const char *name, const char *path);
+
+		// load given shader from file
+		bool loadShader(const char *name, unsigned int type, const char *path);
 	
 		// should load a shader from file
 		bool loadShader(const char *name, const char *vpath, const char *fpath);
