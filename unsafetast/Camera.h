@@ -3,7 +3,6 @@
 #include "glm\ext.hpp"
 struct Camera
 {
-
 	glm::mat4 transform;
 	glm::vec4 loc;
 	float mnear, mfar, maspect, mfov;

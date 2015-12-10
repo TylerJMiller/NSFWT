@@ -122,8 +122,8 @@ bool nsfw::Assets::makeVAO(const char *name, const struct ParticleVertex *parts,
 
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::POSITION);
 	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::VELOCITY);
-	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::LIFETIME);
-	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::LIFESPAN);
+	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::LIFETIME);
+	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::LIFESPAN);
 
 	//unbinding buffers
 	glBindVertexArray(0);
@@ -260,9 +260,9 @@ bool nsfw::Assets::loadTexture(const char * name, const char * path)
 	return true;
 }
 
-bool nsfw::Assets::loadShader(const char * name, unsigned int type, const char * path)
+bool nsfw::Assets::loadShader(unsigned int type, const char * path)
 {
-	ASSET_LOG(GL_HANDLE_TYPE::SHADER);
+	//ASSET_LOG(GL_HANDLE_TYPE::SHADER);
 	GLuint shader = glCreateProgram();;
 
 	std::ifstream in(path);
@@ -289,14 +289,14 @@ bool nsfw::Assets::loadShader(const char * name, unsigned int type, const char *
 		glGetProgramiv(shader, GL_INFO_LOG_LENGTH, &infolength);
 		char* infolog = new char[infolength];
 		glGetProgramInfoLog(shader, infolength, 0, infolog);
-		printf_s("[ERROR] FAILED TO LINK SHADER ", name, "\n");
+		printf_s("[ERROR] FAILED TO LINK SHADER ", path, "\n");
 		printf_s(infolog);
 		delete[] infolog;
 	}
 
 	glDeleteShader(tShader);
 
-	setINTERNAL(GL_HANDLE_TYPE::SHADER, name, shader);
+	//setINTERNAL(GL_HANDLE_TYPE::SHADER, name, shader);
 
 	return false;
 }

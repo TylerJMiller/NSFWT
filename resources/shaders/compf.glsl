@@ -9,5 +9,5 @@ uniform sampler2D LightColor;
 
 void main()
 {
-	FragColor = /*texture(Albedo, vTexCoord) */ texture(LightColor,vTexCoord);
+	FragColor = texture(Albedo, vTexCoord) * texture(LightColor,vTexCoord);
 }

@@ -3,7 +3,6 @@
 #include "glm\ext.hpp"
 struct Camera
 {
-
 	glm::mat4 transform;
 	glm::vec4 loc;
 	float mnear, mfar, maspect, mfov;
@@ -12,6 +11,7 @@ struct Camera
 
 	void update() {}
 	void lookAt(glm::vec3 pos, glm::vec3 target, glm::vec3 up) { loc = glm::vec4(pos, 1); transform = glm::inverse(glm::lookAt(pos, target, up)); }
+	void move(float deltatime, vec4 velocity) { loc += deltatime * velocity; }
 
 	glm::vec4 getPos()			const { return loc; }
 

@@ -9,8 +9,7 @@ public:
 
 	void setLight(glm::vec4 d, glm::vec4 c)
 	{
-		glm::vec3 cxyz = glm::vec3(glm::normalize(d).x, glm::normalize(d).y, glm::normalize(d).z);
-		direction = glm::vec4(cxyz,0);
+		direction = glm::vec4(glm::vec3(glm::normalize(d).x, glm::normalize(d).y, glm::normalize(d).z),0);
 		color = c;
 	}
 

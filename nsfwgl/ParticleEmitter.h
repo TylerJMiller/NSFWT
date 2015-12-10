@@ -1,14 +1,16 @@
 #pragma once
 #include "ParticleVertex.h"
+#include "render.h"
+
 namespace nsfw
 {
-	class ParticleEmitter
+	class ParticleEmitter// : public RenderPass
 	{
 	public:
 		ParticleEmitter();
 		virtual ~ParticleEmitter();
 
-		void initialize(unsigned int aMaxParticles, float aLifepsanMin, float aLifespanMax,
+		void initialize(unsigned int aMaxParticles, float aLifespanMin, float aLifespanMax,
 			float aVelocityMin, float aVelocityMax, float aStartSize, float aEndSize,
 			const glm::vec4& aStartColor, const glm::vec4& aEndColor);
 

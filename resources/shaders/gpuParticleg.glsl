@@ -1,7 +1,7 @@
 #version 410
 
 layout (points) in;
-layout(triangle_strip, max_Vertices = 4) out;
+layout (triangle_strip, max_Vertices = 4) out;
 
 in vec4 position[];
 in float lifetime[];
@@ -30,20 +30,20 @@ void main()
 	corners[2] = vec3(-halfSize, -halfSize, 0);
 	corners[3] = vec3(-halfSize, halfSize, 0);
 	
-	vec3 zAxis = normalize(cameraTransform[3].xyz - position[0]);
+	vec3 zAxis = normalize(cameraTransform[3].xyz - position[0].xyz);
 	vec3 xAxis = cross(cameraTransform[1].xyz, zAxis);
 	vec3 yAxis = cross( zAxis, xAxis);
 	mat3 billboard = mat3(xAxis, yAxis, zAxis);
 	
-	gl_Position = projectionView*vec4(billboard*corners[0]+position[0],1);
+	gl_Position = projectionView*vec4(billboard*corners[0]+position[0].xyz,1);
 	EmitVertex();
 	
-	gl_Position = projectionView*vec4(billboard*corners[1]+position[0],1);
+	gl_Position = projectionView*vec4(billboard*corners[1]+position[0].xyz,1);
 	EmitVertex();
 	
-	gl_Position = projectionView*vec4(billboard*corners[2]+position[0],1);
+	gl_Position = projectionView*vec4(billboard*corners[2]+position[0].xyz,1);
 	EmitVertex();
 	
-	gl_Position = projectionView*vec4(billboard*corners[3]+position[0],1);
+	gl_Position = projectionView*vec4(billboard*corners[3]+position[0].xyz,1);
 	EmitVertex();
 }

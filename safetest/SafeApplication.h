@@ -2,21 +2,26 @@
 
 #include <nsfw.h>
 #include "Camera.h"
-#include "ForwardPass.h"
+#include "FPass.h"
 #include "GPass.h"
-#include "CompositePass.h"
+#include "CPass.h"
+#include "SPass.h"
 #include "LightDirection.h"
 #include "GameObject.h"
 
 class SafeApplication : public nsfw::Application
 {
 	Camera camera;
-	GameObject obj;
-	ForwardPass fp;
-	CompositePass cp;
+	GameObject obj1, obj2;
+	FPass fp;
+	CPass cp;
 	GPass gp;
+	//GPU PARTICLES
+	//PPass pp; eventually
+	nsfw::ParticleEmitter *gpe;
+	SPass sp;
 	LightDirection light;
-	//CAMERA GAMEOBJECT FORWARD COMPOSITE COLOR LIGHT
+
 public:
 	void onStep();
 	void onPlay();

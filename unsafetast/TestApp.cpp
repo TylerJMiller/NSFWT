@@ -7,7 +7,7 @@ void TestApp::onInit()
 	nsfw::Assets::instance().loadShader("Light", "../resources/shaders/lightv.glsl", "../resources/shaders/lightf.glsl");
 	nsfw::Assets::instance().loadShader("White", "../resources/shaders/whitev.glsl", "../resources/shaders/whitef.glsl");
 	nsfw::Assets::instance().loadShader("Compo", "../resources/shaders/compv.glsl", "../resources/shaders/compf.glsl");
-
+	//nsfw::Assets::instance().loadShader("Particles", "../resources/shaders/gpuParticlev.glsl", "../resources/shaders/gpuParticleg.glsl", "../resources/shaders/gpuParticlef.glsl");
 	auto &A = nsfw::Assets::instance();
 
 	nsfw::Assets::instance().loadTexture("TestTexture", "../resources/textures/test.bmp");
@@ -32,16 +32,18 @@ void TestApp::onInit()
 
 void TestApp::onStep()
 {
-	
-	pe.emit(nsfw::Window::instance().getDeltaTime());
+	//emit particles
+	//pe.emit(nsfw::Window::instance().getDeltaTime());
 
 	obj2.transform = glm::rotate(nsfw::Window::instance().getTime() * 100,glm::vec3(0.f,1.f,0.f));
 	//obj1.transform = glm::rotate(nsfw::Window::instance().getTime() * 10, glm::vec3(-1.f, 0.f, 0.f)) * glm::scale(10.f, 10.f, 1.f);
 	fp.prep();
-	//fp.draw(camera, obj2);
-	//fp.draw(camera, obj1);
-	fp.draw(camera, pe);
+	fp.draw(camera, obj1);
+	fp.draw(camera, obj2);
+
 	//draw particles
+	//fp.draw(camera, pe);
+
 	fp.post();
 	
 	sp.prep();
@@ -57,6 +59,8 @@ void TestApp::onStep()
 	cp.draw();
 	cp.post();
 
+	gpe->draw(nsfw::Window::instance().getTime(), camera.transform, camera.getProjection() * camera.getView());
+
 }
 
 void TestApp::onPlay()
@@ -64,10 +68,14 @@ void TestApp::onPlay()
 	camera.lookAt(glm::vec3(-3,3,3), glm::vec3(0,1,0), glm::vec3(0,1,0));
 	lightDir.setLight(glm::vec4(1.f, 1.f, 1.f, 0.f), glm::vec4(1.f, 1.f, 1.f, 1.f));
 	
+	//GPU PARTICLES
+	gpe = new nsfw::ParticleEmitter();
+	gpe->initialize(100000, 0.1f, 5.0f, 5, 20, 1, 0.1f, glm::vec4(1, 0, 0, 1), glm::vec4(1, 1, 0, 1));
+
 	//PARTICLES
-	pe.setParticles(30, 0.1f, 2, 1);
+	//pe.setParticles(800, 0.01f, 20, 1);
 	//MASTER PARTICLE
-	pe.setBase("TestTexture", "Quad", "Quad");
+	//pe.setBase("TestTexture", "Cube", "Cube");
 
 	obj1.transform = glm::rotate(90.f,glm::vec3(1.f,0.f,0.f))*glm::scale(10.f,10.f,1.f);
 	obj1.diffuse = "TestTexture";

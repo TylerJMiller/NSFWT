@@ -11,6 +11,7 @@
 
 class TestApp : public nsfw::Application
 {
+	nsfw::ParticleEmitter *gpe;
 	Emitter pe;
 	Camera camera;
 	GameObject obj1, obj2;

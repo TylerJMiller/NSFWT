@@ -4,9 +4,8 @@
 
 #include "Camera.h"
 #include "GameObject.h"
-#include "Emitter.h"
 
-class ForwardPass : public nsfw::RenderPass
+class FPass : public nsfw::RenderPass
 {
 public:
 	void prep();
@@ -14,7 +13,4 @@ public:
 	void post();
 
 	void draw(const Camera &c, const GameObject &go);
-
-	//draw particle
-	void draw(const Camera &c, const Emitter &e);
 };

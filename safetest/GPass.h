@@ -13,5 +13,5 @@ public:
 
 	void post();
 
-	void draw(const LightDirection &l, const GameObject &go);
+	void draw(const LightDirection &l, const Camera &c);
 };

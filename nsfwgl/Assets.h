@@ -121,7 +121,7 @@ namespace nsfw
 		bool loadTexture(const char *name, const char *path);
 
 		// load given shader from file
-		bool loadShader(const char *name, unsigned int type, const char *path);
+		bool loadShader(unsigned int type, const char *path);
 	
 		// should load a shader from file
 		bool loadShader(const char *name, const char *vpath, const char *fpath);
