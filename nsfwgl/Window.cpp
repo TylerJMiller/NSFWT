@@ -12,10 +12,16 @@ void nsfw::Window::init(unsigned width, unsigned height, const char *title)
 	ogl_LoadFunctions();
 	time = 0;
 	last = 0;
+	glfwGetCursorPos(window, &curX, &curY);
+	lastX = curX;
+	lastY = curY;
 }
 
 void nsfw::Window::step()
 {
+	lastX = curX;
+	lastY = curY;
+	glfwGetCursorPos(window, &curX, &curY);
 	last = time;
 	time = glfwGetTime();
 	glfwSwapBuffers(window);
@@ -49,6 +55,11 @@ float nsfw::Window::getDeltaTime() const
 bool nsfw::Window::getKey(unsigned k) const
 {
 	return glfwGetKey(window, k);
+}
+
+glm::vec2 nsfw::Window::getCurDif() const
+{
+	return glm::vec2(curX - lastX, curY - lastY);
 }
 
 bool nsfw::Window::getShouldClose() const

@@ -1,13 +1,13 @@
 #version 410
-in vec2 vTexCoord;
 
+in vec2 vTexCoord;
 in vec4 vNormal;
 in vec4 vPosition;
+in vec4 vBitTangent;
 
 uniform sampler2D Diffuse;
 uniform sampler2D Normal;
 uniform sampler2D Specular;
-
 
 layout(location = 0) out vec4 oAlbedo;
 layout(location = 1) out vec4 oNormal;

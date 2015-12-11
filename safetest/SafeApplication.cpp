@@ -31,7 +31,26 @@ void SafeApplication::onInit()
 
 void SafeApplication::onStep()
 {
+
+
 	//CAMERA MOVEMENT LOGIC GO HERE
+	if (nsfw::Window::instance().getKey(GLFW_KEY_D))
+		camera.move(nsfw::Window::instance().getDeltaTime(), vec4(5, 0, 0, 1));
+	if (nsfw::Window::instance().getKey(GLFW_KEY_W))
+		camera.move(nsfw::Window::instance().getDeltaTime(), vec4(0, 0, -5, 1));
+	if (nsfw::Window::instance().getKey(GLFW_KEY_S))
+		camera.move(nsfw::Window::instance().getDeltaTime(), vec4(0, 0, 5, 1));
+	if (nsfw::Window::instance().getKey(GLFW_KEY_A))
+		camera.move(nsfw::Window::instance().getDeltaTime(), vec4(-5, 0, 0, 1));
+	if (nsfw::Window::instance().getKey(GLFW_KEY_SPACE))
+		camera.move(nsfw::Window::instance().getDeltaTime(), vec4(0, 5, 0, 1));
+	if (nsfw::Window::instance().getKey(GLFW_KEY_LEFT_SHIFT))
+		camera.move(nsfw::Window::instance().getDeltaTime(), vec4(0, -5, 0, 1));
+
+	if (nsfw::Window::instance().getKey(GLFW_KEY_K))
+		camera.mouseLook(nsfw::Window::instance().getCurDif());
+
+	camera.update();
 
 	obj2.transform = glm::rotate(nsfw::Window::instance().getTime() * 100, glm::vec3(0.f, 1.f, 0.f));
 
@@ -41,13 +60,18 @@ void SafeApplication::onStep()
 	fp.draw(camera, obj1);
 	fp.draw(camera, obj2);
 	//fp.draw(camera, gpe);
-	gpe->draw(nsfw::Window::instance().getTime(), camera.transform, camera.getProjectionView());
+	//GPUPARTICLES
+	if (!nsfw::Window::instance().getKey(GLFW_KEY_P))
+		gpe->draw(nsfw::Window::instance().getTime(), camera.transform, camera.getProjectionView());
 	fp.post();
 
-	sp.prep();
-	sp.draw(light, obj1);
-	sp.draw(light, obj2);
-	sp.post();
+	if (!nsfw::Window::instance().getKey(GLFW_KEY_O))
+	{
+		sp.prep();
+		sp.draw(light, obj1);
+		sp.draw(light, obj2);
+		sp.post();
+	}
 
 	gp.prep();
 	gp.draw(light, camera);
@@ -60,11 +84,11 @@ void SafeApplication::onStep()
 
 void SafeApplication::onPlay()
 {
-	camera.lookAt(glm::vec3(-3.0f, 3.0f, 3.0f), glm::vec3(0.f, 1.f, 0), glm::vec3(0, 1, 0));
+	camera.lookAt(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.f, 0.f, 0), glm::vec3(0, 1, 0));
 	light.setLight(glm::vec4(1.f, 1.f, 1.f, 0.f), glm::vec4(1.f, 1.f, 1.f, 1.f));
 
 	gpe = new ParticleEmitter();
-	gpe->initialize(100000, 0.1f, 5.0f, 5.0f, 20.0f, 1.0f, 0.1f, glm::vec4(1, 0, 0, 1), glm::vec4(1, 1, 0, 1));
+	gpe->initialize(5, 0.1f, 5.0f, 5.0f, 20.0f, 1.0f, 0.1f, glm::vec4(1, 0, 0, 1), glm::vec4(1, 1, 0, 1));
 	gpe->SetPosition(glm::vec3(1, 1, 1));
 
 	obj1.transform = glm::rotate(90.f, glm::vec3(1.f, 0.f, 0.f))*glm::scale(10.f, 10.f, 1.f);

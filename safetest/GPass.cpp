@@ -32,13 +32,13 @@ void GPass::draw(const LightDirection &l, const Camera &c)
 	setUniform("Color", nsfw::UNIFORM::FLO4, glm::value_ptr(l.color));
 
 	nsfw::Asset<nsfw::ASSET::TEXTURE> Normal = "Normal";
-	setUniform("Normal", nsfw::UNIFORM::TEX2, &Normal, 0);
+	setUniform("Normal", nsfw::UNIFORM::TEX2, &Normal, 1);
 
 	nsfw::Asset<nsfw::ASSET::TEXTURE> Position = "Position";
-	setUniform("Position", nsfw::UNIFORM::TEX2, &Position, 1);
+	setUniform("Position", nsfw::UNIFORM::TEX2, &Position, 2);
 
 	nsfw::Asset<nsfw::ASSET::TEXTURE> Shadow = "ShadowMap";
-	setUniform("Shadow", nsfw::UNIFORM::TEX2, &Shadow, 2);
+	setUniform("Shadow", nsfw::UNIFORM::TEX2, &Shadow, 3);
 
 	mat4 clpToUV = mat4(.5f, 0, 0, 0,
 		0, .5f, 0, 0,

@@ -31,6 +31,7 @@ void FPass::draw(const Camera &c, const GameObject &go)
 	//GameObject
 	setUniform("Model", nsfw::UNIFORM::MAT4, glm::value_ptr(go.transform));
 	setUniform("Diffuse", nsfw::UNIFORM::TEX2, &(go.diffuse));
+	setUniform("Normal", nsfw::UNIFORM::TEX2, &(go.normal), 2);
 
 	glBindVertexArray(*go.mesh);
 	glDrawElements(GL_TRIANGLES, *go.tris, GL_UNSIGNED_INT, 0);

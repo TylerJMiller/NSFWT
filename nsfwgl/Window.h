@@ -19,6 +19,7 @@ namespace nsfw
 		GLFWwindow *window;
 		unsigned width, height;		// keep track of width height- needed for glViewport FBO integration
 		float last, time;
+		double curX, curY, lastX, lastY;
 		Window():window(nullptr),width(0),height(0) {}
 	public:
 		static Window &instance() { static Window w; return w; }
@@ -38,6 +39,7 @@ namespace nsfw
 		float	  getTime()                  const;
 		float	  getDeltaTime()			 const;
 		bool	  getKey(unsigned k)         const;
+		glm::vec2 getCurDif()				 const;
 		bool	  getShouldClose()           const;
 		unsigned  getWidth()                 const;
 		unsigned  getHeight()                const;
