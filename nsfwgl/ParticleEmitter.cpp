@@ -135,27 +135,26 @@ namespace nsfw
 		return shader;
 	}*/
 
-	ParticleEmitter::ParticleEmitter() : mParticles(nullptr), mMaxParticles(0), mPosition(0, 0, 0, 0), mDrawShader(0), mUpdateShader(0),
-		mLastDrawTime(0)
+	nParticleEmitter::nParticleEmitter() : mParticles(nullptr), mMaxParticles(0), mPosition(0, 0, 0, 0), mDrawShader(0), mUpdateShader(0), mLastDrawTime(0)
 	{
 		mVAO[0] = 0;
 		mVAO[1] = 0;
 		mVBO[0] = 0;
-		mVBO[0] = 0;
+		mVBO[1] = 0;
 	}
 
-	ParticleEmitter::~ParticleEmitter()
+	nParticleEmitter::~nParticleEmitter()
 	{
 		delete[] mParticles;
 
-		//glDeleteVertexArrays(2, mVAO);
-		//glDeleteBuffers(2, mVBO);
+		glDeleteVertexArrays(2, mVAO);
+		glDeleteBuffers(2, mVBO);
 
-		//glDeleteProgram(mDrawShader);
-		//glDeleteProgram(mUpdateShader);
+		glDeleteProgram(mDrawShader);
+		glDeleteProgram(mUpdateShader);
 	}
 
-	void ParticleEmitter::initialize(unsigned int aMaxParticles, float aLifespanMin, float aLifespanMax,
+	void nParticleEmitter::initialize(unsigned int aMaxParticles, float aLifespanMin, float aLifespanMax,
 		float aVelocityMin, float aVelocityMax, float aStartSize, float aEndSize,
 		const glm::vec4 & aStartColor, const glm::vec4 & aEndColor)
 	{
@@ -168,7 +167,7 @@ namespace nsfw
 		mLifespanMin = aLifespanMin;
 		mLifespanMax = aLifespanMax;
 		mMaxParticles = aMaxParticles;
-		mParticles = new ParticleVertex[aMaxParticles];
+		mParticles = new nParticleVertex[aMaxParticles];
 
 		mActiveBuffer = 0;
 		createBuffers();
@@ -176,9 +175,13 @@ namespace nsfw
 		createDrawShader();
 	}
 
-	void ParticleEmitter::draw(float time, const glm::mat4 & aCameraTransform, const glm::mat4 & aProjectionView)
+	void nParticleEmitter::draw(float time, const glm::mat4 & aCameraTransform, const glm::mat4 & aProjectionView)
 	{
 		glUseProgram(mUpdateShader);
+
+		glClearColor(0.25f, 0.25f, 0.25f, 1);
+
+		glClear(GL_DEPTH_BUFFER_BIT);
 
 		int location = glGetUniformLocation(mUpdateShader, "time");
 		glUniform1f(location, time);
@@ -206,9 +209,12 @@ namespace nsfw
 		glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, 0);
 
 		glUseProgram(mDrawShader);
-
+		location = glGetUniformLocation(mDrawShader, "cameraTransform");
+		glUniformMatrix4fv(location, 1, false, &aCameraTransform[0][0]);
+		
 		location = glGetUniformLocation(mDrawShader, "projectionView");
 		glUniformMatrix4fv(location, 1, false, &aProjectionView[0][0]);
+		
 		location = glGetUniformLocation(mUpdateShader, "emitterPosition");
 		glUniformMatrix4fv(location, 1, false, &aCameraTransform[0][0]);
 
@@ -216,9 +222,11 @@ namespace nsfw
 		glDrawArrays(GL_POINTS, 0, mMaxParticles);
 
 		mActiveBuffer = otherbuffer;
+
+
 	}
 
-	void ParticleEmitter::createBuffers()
+	void nParticleEmitter::createBuffers()
 	{
 		glGenVertexArrays(2, mVAO);
 		glGenBuffers(2, mVBO);
@@ -226,38 +234,50 @@ namespace nsfw
 		//first buffer
 		glBindVertexArray(mVAO[0]);
 		glBindBuffer(GL_ARRAY_BUFFER, mVBO[0]);
-		glBufferData(GL_ARRAY_BUFFER, mMaxParticles * sizeof(ParticleVertex), mParticles, GL_STREAM_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, mMaxParticles * sizeof(nParticleVertex), mParticles, GL_STREAM_DRAW);
+
+		
 
 		glEnableVertexAttribArray(0);	//position
 		glEnableVertexAttribArray(1);	//velocity
 		glEnableVertexAttribArray(2);	//lifetime
 		glEnableVertexAttribArray(3);	//lifespan
 
-		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::POSITION);
-		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::VELOCITY);
-		glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::LIFETIME);
-		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::LIFESPAN);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(nParticleVertex), 0);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(nParticleVertex), ((char*)0) + 12);
+		glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(nParticleVertex), ((char*)0) + 24);
+		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(nParticleVertex), ((char*)0) + 28);
+
+		//glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::POSITION);
+		//glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::VELOCITY);
+		//glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::LIFETIME);
+		//glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::LIFESPAN);
 
 		//dubble buffer
 		glBindVertexArray(mVAO[1]);
 		glBindBuffer(GL_ARRAY_BUFFER, mVBO[1]);
-		glBufferData(GL_ARRAY_BUFFER, mMaxParticles * sizeof(ParticleVertex), 0, GL_STREAM_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, mMaxParticles * sizeof(nParticleVertex), 0, GL_STREAM_DRAW);
 
 		glEnableVertexAttribArray(0);	//position
 		glEnableVertexAttribArray(1);	//velocity
 		glEnableVertexAttribArray(2);	//lifetime
 		glEnableVertexAttribArray(3);	//lifespan
 
-		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::POSITION);
-		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::VELOCITY);
-		glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::LIFETIME);
-		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::LIFESPAN);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(nParticleVertex), 0);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(nParticleVertex), ((char*)0) + 12);
+		glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(nParticleVertex), ((char*)0) + 24);
+		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(nParticleVertex), ((char*)0) + 28);
+
+		//glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::POSITION);
+		//glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::VELOCITY);
+		//glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::LIFETIME);
+		//glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::LIFESPAN);
 
 		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
-	void ParticleEmitter::createUpdateShader()
+	void nParticleEmitter::createUpdateShader()
 	{
 		unsigned int vs = loadShader(GL_VERTEX_SHADER, "../resources/shaders/gpuParticleUpdatev.glsl");
 
@@ -279,7 +299,7 @@ namespace nsfw
 		glUniform1f(location, mLifespanMax);
 	}
 
-	void ParticleEmitter::createDrawShader()
+	void nParticleEmitter::createDrawShader()
 	{
 		unsigned int vs = loadShader(GL_VERTEX_SHADER, "../resources/shaders/gpuParticlev.glsl");
 		unsigned int gs = loadShader(GL_GEOMETRY_SHADER, "../resources/shaders/gpuParticleg.glsl");
@@ -290,9 +310,10 @@ namespace nsfw
 
 		mDrawShader = glCreateProgram();
 		glAttachShader(mDrawShader, vs);
-		glAttachShader(mDrawShader, gs);
 		glAttachShader(mDrawShader, fs);
+		glAttachShader(mDrawShader, gs);
 		glLinkProgram(mDrawShader);
+
 
 		glDeleteShader(vs);
 		glDeleteShader(gs);

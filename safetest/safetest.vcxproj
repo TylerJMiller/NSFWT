@@ -125,6 +125,7 @@
     <ClCompile Include="GPass.cpp" />
     <ClCompile Include="CPass.cpp" />
     <ClCompile Include="FPass.cpp" />
+    <ClCompile Include="GPUParticles.cpp" />
     <ClCompile Include="SafeApplication.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SPass.cpp" />
@@ -135,6 +136,7 @@
     <ClInclude Include="CPass.h" />
     <ClInclude Include="FPass.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GPUParticles.h" />
     <ClInclude Include="LightDirection.h" />
     <ClInclude Include="SafeApplication.h" />
     <ClInclude Include="SPass.h" />

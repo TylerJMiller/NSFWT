@@ -35,26 +35,27 @@ void SafeApplication::onStep()
 
 	obj2.transform = glm::rotate(nsfw::Window::instance().getTime() * 100, glm::vec3(0.f, 1.f, 0.f));
 
-	gpe->draw(nsfw::Window::instance().getTime(), camera.transform, camera.getProjection() * camera.getView());
+	//gpe->draw(nsfw::Window::instance().getTime(), camera.transform, camera.getProjection() * camera.getView());
 
-	//fp.prep();
-	//fp.draw(camera, obj1);
-	//fp.draw(camera, obj2);
-	//fp.post();
+	fp.prep();
+	fp.draw(camera, obj1);
+	fp.draw(camera, obj2);
+	//fp.draw(camera, gpe);
+	gpe->draw(nsfw::Window::instance().getTime(), camera.transform, camera.getProjectionView());
+	fp.post();
 
-	//sp.prep();
-	//sp.draw(light, obj1);
-	//sp.draw(light, obj2);
-	//sp.post();
+	sp.prep();
+	sp.draw(light, obj1);
+	sp.draw(light, obj2);
+	sp.post();
 
-	//gp.prep();
-	//gp.draw(light, camera);
-	//gp.post();
+	gp.prep();
+	gp.draw(light, camera);
+	gp.post();
 
-
-	//cp.prep();
-	//cp.draw();
-	//cp.post();
+	cp.prep();
+	cp.draw();
+	cp.post();
 }
 
 void SafeApplication::onPlay()
@@ -62,8 +63,9 @@ void SafeApplication::onPlay()
 	camera.lookAt(glm::vec3(-3.0f, 3.0f, 3.0f), glm::vec3(0.f, 1.f, 0), glm::vec3(0, 1, 0));
 	light.setLight(glm::vec4(1.f, 1.f, 1.f, 0.f), glm::vec4(1.f, 1.f, 1.f, 1.f));
 
-	gpe = new nsfw::ParticleEmitter();
+	gpe = new ParticleEmitter();
 	gpe->initialize(100000, 0.1f, 5.0f, 5.0f, 20.0f, 1.0f, 0.1f, glm::vec4(1, 0, 0, 1), glm::vec4(1, 1, 0, 1));
+	gpe->SetPosition(glm::vec3(1, 1, 1));
 
 	obj1.transform = glm::rotate(90.f, glm::vec3(1.f, 0.f, 0.f))*glm::scale(10.f, 10.f, 1.f);
 	obj1.diffuse = "TestTexture";

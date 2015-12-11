@@ -106,10 +106,10 @@ namespace nsfw
 		bool makeVAO(const char *name, const struct Vertex *verts, unsigned vsize, const unsigned *tris, unsigned tsize);
 
 		//Particle VAO
-		bool makeVAO(const char *name, const struct ParticleVertex *parts, unsigned psize);
+		bool makeVAO(const char *name, const struct nParticleVertex *parts, unsigned psize);
 
 		//Particle VAO
-		bool makePVAO(const char *name, const struct ParticleVertex *parts, unsigned psize);
+		bool makePVAO(const char *name, const struct nParticleVertex *parts, unsigned psize);
 
 		// should call makeTexture nTextures number of times
 		bool makeFBO(const char *name, unsigned w, unsigned h, unsigned nTextures, const char *names[], const unsigned depths[]);

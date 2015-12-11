@@ -35,3 +35,8 @@ void FPass::draw(const Camera &c, const GameObject &go)
 	glBindVertexArray(*go.mesh);
 	glDrawElements(GL_TRIANGLES, *go.tris, GL_UNSIGNED_INT, 0);
 }
+
+void FPass::draw(const Camera &c, const ParticleEmitter &pe)
+{
+	//pe.draw(nsfw::Window::instance().getTime(), c.transform, c.getProjectionView());
+}

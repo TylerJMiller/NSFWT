@@ -1,12 +1,12 @@
 #version 410
 
-layout (location=0) in vec4 Position;
-layout (location=1) in vec4 Velocity;
+layout (location=0) in vec3 Position;
+layout (location=1) in vec3 Velocity;
 layout (location=2) in float Lifetime;
 layout (location=3) in float Lifespan;
 
-out vec4 position;
-out vec4 velocity;
+out vec3 position;
+out vec3 velocity;
 out float lifetime;
 out float lifespan;
 
@@ -37,12 +37,12 @@ void main()
 	
 	if (lifetime > lifespan)
 	{
-		uint seed = uint(time * 1000.0);
+		uint seed = uint(time * 1000.0 + uint(gl_VertexID));
 		velocity.x = rand(seed++, 2) - 1;
 		velocity.y = rand(seed++, 2) - 1;
 		velocity.z = rand(seed++, 2) - 1;
 		velocity = normalize(velocity);
-		position = emitterPosition;
+		position = emitterPosition.xyz;
 		lifetime = 0;
 		lifespan = rand(seed++, lifeMax - lifeMin) + lifeMin;
 	}

@@ -17,4 +17,5 @@ struct Camera
 
 	glm::mat4 getView()			const { return glm::inverse(transform); }
 	glm::mat4 getProjection()	const { return glm::perspective(mfov, maspect, mnear, mfar); }
+	glm::mat4 getProjectionView() const { return  getProjection() * getView(); }
 };

@@ -4,11 +4,11 @@
 
 namespace nsfw
 {
-	class ParticleEmitter// : public RenderPass
+	class nParticleEmitter// : public RenderPass
 	{
 	public:
-		ParticleEmitter();
-		virtual ~ParticleEmitter();
+		nParticleEmitter();
+		virtual ~nParticleEmitter();
 
 		void initialize(unsigned int aMaxParticles, float aLifespanMin, float aLifespanMax,
 			float aVelocityMin, float aVelocityMax, float aStartSize, float aEndSize,
@@ -22,7 +22,7 @@ namespace nsfw
 		void createUpdateShader();
 		void createDrawShader();
 
-		ParticleVertex* mParticles;
+		nParticleVertex* mParticles;
 
 		unsigned int mMaxParticles;
 

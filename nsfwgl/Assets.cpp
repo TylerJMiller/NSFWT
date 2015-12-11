@@ -93,7 +93,7 @@ bool nsfw::Assets::makeVAO(const char * name, const struct Vertex *verts, unsign
 	return false;
 }
 
-bool nsfw::Assets::makeVAO(const char *name, const struct ParticleVertex *parts, unsigned psize)	// Not yet completed, reference only
+bool nsfw::Assets::makeVAO(const char *name, const struct nParticleVertex *parts, unsigned psize)	// Not yet completed, reference only
 {
 	ASSET_LOG(GL_HANDLE_TYPE::VBO);		//array that stores vertices
 	ASSET_LOG(GL_HANDLE_TYPE::IBO);		//array that stores which vertices make up triangles
@@ -110,7 +110,7 @@ bool nsfw::Assets::makeVAO(const char *name, const struct ParticleVertex *parts,
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
-	glBufferData(GL_ARRAY_BUFFER, psize * sizeof(ParticleVertex), parts, GL_STATIC_DRAW);			//vbo
+	glBufferData(GL_ARRAY_BUFFER, psize * sizeof(nParticleVertex), parts, GL_STATIC_DRAW);			//vbo
 	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, size *sizeof(ParticleVertex), parts, GL_STATIC_DRAW);	//ibo
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, psize *sizeof(unsigned), parts, GL_STATIC_DRAW);	//ibo
 	
@@ -120,10 +120,10 @@ bool nsfw::Assets::makeVAO(const char *name, const struct ParticleVertex *parts,
 	glEnableVertexAttribArray(2);	//lifetime
 	glEnableVertexAttribArray(3);	//lifespan
 
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::POSITION);
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::VELOCITY);
-	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::LIFETIME);
-	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::LIFESPAN);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(nParticleVertex), (void*)nParticleVertex::POSITION);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(nParticleVertex), (void*)nParticleVertex::VELOCITY);
+	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(nParticleVertex), (void*)nParticleVertex::LIFETIME);
+	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(nParticleVertex), (void*)nParticleVertex::LIFESPAN);
 
 	//unbinding buffers
 	glBindVertexArray(0);
@@ -138,7 +138,7 @@ bool nsfw::Assets::makeVAO(const char *name, const struct ParticleVertex *parts,
 	return false;
 }
 
-bool nsfw::Assets::makePVAO(const char *name, const struct ParticleVertex *parts, unsigned psize)	// Not yet completed, reference only
+bool nsfw::Assets::makePVAO(const char *name, const struct nParticleVertex *parts, unsigned psize)	// Not yet completed, reference only
 {
 	ASSET_LOG(GL_HANDLE_TYPE::VBO);		//array that stores vertices
 	ASSET_LOG(GL_HANDLE_TYPE::IBO);		//array that stores which vertices make up triangles
@@ -155,19 +155,19 @@ bool nsfw::Assets::makePVAO(const char *name, const struct ParticleVertex *parts
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
-	glBufferData(GL_ARRAY_BUFFER, psize * sizeof(ParticleVertex), parts, GL_STATIC_DRAW);			//vbo
+	glBufferData(GL_ARRAY_BUFFER, psize * sizeof(nParticleVertex), parts, GL_STATIC_DRAW);			//vbo
 																									//glBufferData(GL_ELEMENT_ARRAY_BUFFER, size *sizeof(ParticleVertex), parts, GL_STATIC_DRAW);	//ibo
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, psize *sizeof(ParticleVertex), parts, GL_STATIC_DRAW);	//ibo
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, psize *sizeof(nParticleVertex), parts, GL_STATIC_DRAW);	//ibo
 																							//vao
 	glEnableVertexAttribArray(0);	//position
 	glEnableVertexAttribArray(1);	//velocity
 	glEnableVertexAttribArray(2);	//lifetime
 	glEnableVertexAttribArray(3);	//lifespan
 
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::POSITION);
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::VELOCITY);
-	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::LIFETIME);
-	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)ParticleVertex::LIFESPAN);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(nParticleVertex), (void*)nParticleVertex::POSITION);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(nParticleVertex), (void*)nParticleVertex::VELOCITY);
+	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(nParticleVertex), (void*)nParticleVertex::LIFETIME);
+	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(nParticleVertex), (void*)nParticleVertex::LIFESPAN);
 
 	//unbinding buffers
 	glBindVertexArray(0);

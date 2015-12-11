@@ -8,6 +8,7 @@
 #include "SPass.h"
 #include "LightDirection.h"
 #include "GameObject.h"
+#include "GPUParticles.h"
 
 class SafeApplication : public nsfw::Application
 {
@@ -17,8 +18,8 @@ class SafeApplication : public nsfw::Application
 	CPass cp;
 	GPass gp;
 	//GPU PARTICLES
-	//PPass pp; eventually
-	nsfw::ParticleEmitter *gpe;
+	ParticleEmitter *gpe;
+	//nsfw::nParticleEmitter *gpe;
 	SPass sp;
 	LightDirection light;
 

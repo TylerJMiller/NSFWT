@@ -5,9 +5,9 @@ using namespace glm;
 
 namespace nsfw
 {
-	struct ParticleVertex
+	struct nParticleVertex
 	{
-		ParticleVertex() : lifetime(1), lifespan(0) {}
+		nParticleVertex() : lifetime(1), lifespan(0) {}
 
 		glm::vec4 position;
 		glm::vec4 velocity;
