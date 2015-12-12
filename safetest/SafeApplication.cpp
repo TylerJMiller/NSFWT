@@ -2,17 +2,17 @@
 #include "SafeApplication.h"
 void SafeApplication::onInit()
 {
-	nsfw::Assets::instance().loadShader("Basic", "../resources/shaders/basicv.glsl", "../resources/shaders/basicf.glsl");
-	nsfw::Assets::instance().loadShader("Light", "../resources/shaders/lightv.glsl", "../resources/shaders/lightf.glsl");
-	nsfw::Assets::instance().loadShader("White", "../resources/shaders/whitev.glsl", "../resources/shaders/whitef.glsl");
-	nsfw::Assets::instance().loadShader("Compo", "../resources/shaders/compv.glsl", "../resources/shaders/compf.glsl");
+	nsfw::Assets::instance().loadShader("Basic", "./resources/shaders/basicv.glsl", "./resources/shaders/basicf.glsl");
+	nsfw::Assets::instance().loadShader("Light", "./resources/shaders/lightv.glsl", "./resources/shaders/lightf.glsl");
+	nsfw::Assets::instance().loadShader("White", "./resources/shaders/whitev.glsl", "./resources/shaders/whitef.glsl");
+	nsfw::Assets::instance().loadShader("Compo", "./resources/shaders/compv.glsl", "./resources/shaders/compf.glsl");
 
 	auto &A = nsfw::Assets::instance();
 
-	nsfw::Assets::instance().loadTexture("TestTexture", "../resources/textures/test.bmp");
+	nsfw::Assets::instance().loadTexture("TestTexture", "./resources/textures/test.bmp");
 
-	nsfw::Assets::instance().loadFBX("Spear", "../resources/models/soulspear.fbx");
-	nsfw::Assets::instance().loadFBX("Cube", "../resources/models/cube.fbx");
+	nsfw::Assets::instance().loadFBX("Spear", "./resources/models/soulspear.fbx");
+	//nsfw::Assets::instance().loadFBX("Cube", "./resources/models/cube.fbx");
 
 	const char *renderTargetNames[] = { "Albedo", "Normal", "Position", "Depth" };
 	unsigned renderTargetDepths[] = { GL_RGBA, GL_RGBA, GL_RGBA, GL_DEPTH_COMPONENT };
@@ -84,8 +84,8 @@ void SafeApplication::onStep()
 
 void SafeApplication::onPlay()
 {
-	camera.lookAt(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.f, 0.f, 0), glm::vec3(0, 1, 0));
-	light.setLight(glm::vec4(1.f, 1.f, 1.f, 0.f), glm::vec4(1.f, 1.f, 1.f, 1.f));
+	camera.lookAt(glm::vec3(0.0f, 3.0f, 3.0f), glm::vec3(0.f, 3.f, 0), glm::vec3(0, 1, 0));
+	light.setLight(glm::vec4(0.f, 1.f, 1.f, 0.f), glm::vec4(1.f, 1.f, 1.f, 1.f));
 
 	gpe = new ParticleEmitter();
 	gpe->initialize(5, 0.1f, 5.0f, 5.0f, 20.0f, 1.0f, 0.1f, glm::vec4(1, 0, 0, 1), glm::vec4(1, 1, 0, 1));

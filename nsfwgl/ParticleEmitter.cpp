@@ -279,7 +279,7 @@ namespace nsfw
 
 	void nParticleEmitter::createUpdateShader()
 	{
-		unsigned int vs = loadShader(GL_VERTEX_SHADER, "../resources/shaders/gpuParticleUpdatev.glsl");
+		unsigned int vs = loadShader(GL_VERTEX_SHADER, "./resources/shaders/gpuParticleUpdatev.glsl");
 
 		mUpdateShader = glCreateProgram();
 		glAttachShader(mUpdateShader, vs);
@@ -301,11 +301,10 @@ namespace nsfw
 
 	void nParticleEmitter::createDrawShader()
 	{
-		unsigned int vs = loadShader(GL_VERTEX_SHADER, "../resources/shaders/gpuParticlev.glsl");
-		unsigned int gs = loadShader(GL_GEOMETRY_SHADER, "../resources/shaders/gpuParticleg.glsl");
-		unsigned int fs= loadShader(GL_FRAGMENT_SHADER, "../resources/shaders/gpuParticlef.glsl");
+		unsigned int vs = loadShader(GL_VERTEX_SHADER, "./resources/shaders/gpuParticlev.glsl");
+		unsigned int gs = loadShader(GL_GEOMETRY_SHADER, "./resources/shaders/gpuParticleg.glsl");
+		unsigned int fs= loadShader(GL_FRAGMENT_SHADER, "./resources/shaders/gpuParticlef.glsl");
 
-		//loadShader(vs, "../resources/shaders/gpuParticlev.glsl", gs, "../resources/shaders/gpuParticleg.glsl", fs, "../resources/shaders/gpuParticlef.glsl");
 
 
 		mDrawShader = glCreateProgram();

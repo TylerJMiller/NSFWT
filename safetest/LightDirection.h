@@ -6,6 +6,7 @@ class LightDirection
 {	
 public:
 	glm::vec4 direction, color;
+	glm::mat4 projection, view;
 
 	void setLight(glm::vec4 d, glm::vec4 c)
 	{

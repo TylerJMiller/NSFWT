@@ -85,14 +85,14 @@ void ParticleEmitter::draw(float time, const glm::mat4 & aCameraTransform, const
 	location = glGetUniformLocation(mDrawShader, "cameraTransform");
 	glUniformMatrix4fv(location, 1, false, &aCameraTransform[0][0]);
 
-	location = glGetUniformLocation(mUpdateShader, "emitterPosition");
-	glUniformMatrix4fv(location, 1, false, &aCameraTransform[0][0]);
+	/*location = glGetUniformLocation(mUpdateShader, "emitterPosition");
+	glUniformMatrix4fv(location, 1, false, &aCameraTransform[0][0]);*/
 
 	location = glGetUniformLocation(mDrawShader, "myTexture");
 	glUniform1i(location, 0);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, nsfw::Assets::instance().get<nsfw::ASSET::TEXTURE>("soulspear_diffuse.tga"));
-	glBindTexture(GL_TEXTURE_2D, nsfw::Assets::instance().get<nsfw::ASSET::TEXTURE>("TestTexture"));
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_2D, nsfw::Assets::instance().get<nsfw::ASSET::TEXTURE>("soulspear_diffuse.tga"));
+	//glBindTexture(GL_TEXTURE_2D, nsfw::Assets::instance().get<nsfw::ASSET::TEXTURE>("TestTexture"));
 
 	glBindVertexArray(mVAO[mActiveBuffer]);
 	glDrawArrays(GL_POINTS, 0, mMaxParticles);
@@ -139,7 +139,7 @@ void ParticleEmitter::createBuffers()
 
 void ParticleEmitter::createUpdateShader()
 {
-	unsigned int vs = loadShader(GL_VERTEX_SHADER, "../resources/shaders/gpuParticleUpdatev.glsl");
+	unsigned int vs = loadShader(GL_VERTEX_SHADER, "./resources/shaders/gpuParticleUpdatev.glsl");
 
 	mUpdateShader = glCreateProgram();
 	glAttachShader(mUpdateShader, vs);
@@ -161,11 +161,9 @@ void ParticleEmitter::createUpdateShader()
 
 void ParticleEmitter::createDrawShader()
 {
-	unsigned int vs = loadShader(GL_VERTEX_SHADER, "../resources/shaders/gpuParticlev.glsl");
-	unsigned int gs = loadShader(GL_GEOMETRY_SHADER, "../resources/shaders/gpuParticleg.glsl");
-	unsigned int fs = loadShader(GL_FRAGMENT_SHADER, "../resources/shaders/gpuParticlef.glsl");
-
-	//loadShader(vs, "../resources/shaders/gpuParticlev.glsl", gs, "../resources/shaders/gpuParticleg.glsl", fs, "../resources/shaders/gpuParticlef.glsl");
+	unsigned int vs = loadShader(GL_VERTEX_SHADER, "./resources/shaders/gpuParticlev.glsl");
+	unsigned int gs = loadShader(GL_GEOMETRY_SHADER, "./resources/shaders/gpuParticleg.glsl");
+	unsigned int fs = loadShader(GL_FRAGMENT_SHADER, "./resources/shaders/gpuParticlef.glsl");
 
 	mDrawShader = glCreateProgram();
 	glAttachShader(mDrawShader, vs);

@@ -3,11 +3,26 @@
 #include "glm\ext.hpp"
 #include "nsfw.h"
 
+
+void APIENTRY oglErrorDefaultCallback(GLenum source,
+	GLenum type,
+	GLuint id,
+	GLenum severity,
+	GLsizei length,
+	const GLchar *message,
+	const void *userParam)
+{
+	// if 'GL_DEBUG_OUTPUT_SYNCHRONOUS' is enabled, you can place a
+	// breakpoint here and the callstack should reflect the problem location!
+	std::cerr << message << std::endl;
+}
+
 void nsfw::Window::init(unsigned width, unsigned height, const char *title)
 {
 	//ADD ERROR CHECKING
 	glfwInit();
 	window = glfwCreateWindow(width, height, title, nullptr, nullptr);
+	glfwMakeContextCurrent(window);
 	glfwMakeContextCurrent(window);
 	ogl_LoadFunctions();
 	time = 0;
@@ -15,6 +30,21 @@ void nsfw::Window::init(unsigned width, unsigned height, const char *title)
 	glfwGetCursorPos(window, &curX, &curY);
 	lastX = curX;
 	lastY = curY;
+
+#ifdef _DEBUG
+	if (glDebugMessageCallback)
+	{
+		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+		glDebugMessageCallback(oglErrorDefaultCallback, nullptr);
+
+		GLuint unusedIDs = 0;
+		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, &unusedIDs, true);
+	}
+	else
+	{
+		assert(false && "Failed to subscribe to glDebugMessageCallback.");
+	}
+#endif
 }
 
 void nsfw::Window::step()
@@ -79,7 +109,6 @@ unsigned nsfw::Window::getHeight() const
 
 glm::mat4 nsfw::Window::getTexelAdjustmentMatrix() const
 {
-	TODO_D("Implemented, not tested.");
 
 	glm::vec3 texelSize = 1.0f/glm::vec3(width,height,0);
 	glm::vec3 halfTexel = texelSize * 0.5f; // bottom left

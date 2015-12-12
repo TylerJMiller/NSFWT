@@ -17,14 +17,14 @@ bool nsfw::RenderPass::setUniform(const char *name, nsfw::UNIFORM::TYPE type, co
 	case nsfw::UNIFORM::TEX2:	glActiveTexture(GL_TEXTURE0 + count);
 								glBindTexture(GL_TEXTURE_2D, *(const GLuint*)value);
 								glUniform1i(loc, count);											break;
-	default:				  TODO_D("INVALID Uniform type.");	  break;
+	default:				  	  break;
 	}
 
 	return false;
 }
 
 // set GL state settings and globally accessible uniforms! Should be called before rendering occurs!
-void nsfw::RenderPass::prep() { TODO_D("OVERRIDE: Setup the state of the card for this pass."); }
+void nsfw::RenderPass::prep() {  }
 
 // reset the GL state- undo what we did just in case.
-void nsfw::RenderPass::post() { TODO_D("OVERRIDE: Clean up the state of the card."); }
+void nsfw::RenderPass::post() {  }

@@ -26,7 +26,7 @@ void GPass::draw(const LightDirection &l, const Camera &c)
 {
 	setUniform("View", nsfw::UNIFORM::MAT4, glm::value_ptr(c.getView()));
 
-	setUniform("Direction", nsfw::UNIFORM::FLO4, glm::value_ptr(l.direction));
+	setUniform("LightDirection", nsfw::UNIFORM::FLO4, glm::value_ptr(l.direction));
 	setUniform("LightProjection", nsfw::UNIFORM::MAT4, glm::value_ptr(l.getProjection()));
 	setUniform("LightView", nsfw::UNIFORM::MAT4, glm::value_ptr(l.getView()));
 	setUniform("Color", nsfw::UNIFORM::FLO4, glm::value_ptr(l.color));
@@ -40,11 +40,11 @@ void GPass::draw(const LightDirection &l, const Camera &c)
 	nsfw::Asset<nsfw::ASSET::TEXTURE> Shadow = "ShadowMap";
 	setUniform("Shadow", nsfw::UNIFORM::TEX2, &Shadow, 3);
 
-	mat4 clpToUV = mat4(.5f, 0, 0, 0,
+	mat4 textureSpaceOffset = mat4(.5f, 0, 0, 0,
 		0, .5f, 0, 0,
 		0, 0, .5f, 0,
 		.5f, .5f, .5f, 1.f);
-	setUniform("clipToUV", nsfw::UNIFORM::MAT4, glm::value_ptr(clpToUV));
+	setUniform("textureSpaceOffset", nsfw::UNIFORM::MAT4, glm::value_ptr(textureSpaceOffset));
 
 	nsfw::Asset<nsfw::ASSET::VAO> qm = "Quad";
 	nsfw::Asset<nsfw::ASSET::SIZE> qt = "Quad";
