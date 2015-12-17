@@ -2,9 +2,9 @@
 #include "SafeApplication.h"
 void SafeApplication::onInit()
 {
-	nsfw::Assets::instance().loadShader("Basic", "./resources/shaders/basicv.glsl", "./resources/shaders/basicf.glsl");
+	nsfw::Assets::instance().loadShader("Geo", "./resources/shaders/geov.glsl", "./resources/shaders/geof.glsl");
 	nsfw::Assets::instance().loadShader("Light", "./resources/shaders/lightv.glsl", "./resources/shaders/lightf.glsl");
-	nsfw::Assets::instance().loadShader("White", "./resources/shaders/whitev.glsl", "./resources/shaders/whitef.glsl");
+	nsfw::Assets::instance().loadShader("Shadow", "./resources/shaders/shadowv.glsl", "./resources/shaders/shadowf.glsl");
 	nsfw::Assets::instance().loadShader("Compo", "./resources/shaders/compv.glsl", "./resources/shaders/compf.glsl");
 
 	auto &A = nsfw::Assets::instance();
@@ -16,15 +16,15 @@ void SafeApplication::onInit()
 
 	const char *renderTargetNames[] = { "Albedo", "Normal", "Position", "Depth" };
 	unsigned renderTargetDepths[] = { GL_RGBA, GL_RGBA, GL_RGBA, GL_DEPTH_COMPONENT };
-	A.makeFBO("FPass", 800, 600, 4, renderTargetNames, renderTargetDepths);
+	A.makeFBO("GeoPass", 800, 600, 4, renderTargetNames, renderTargetDepths);
 
 	const char *lightTargetNames[] = { "LightColor" };
 	unsigned lightTargetDepths[] = { GL_RGBA };
-	A.makeFBO("GPass", 800, 600, 1, lightTargetNames, lightTargetDepths);
+	A.makeFBO("DLightPass", 800, 600, 1, lightTargetNames, lightTargetDepths);
 
 	const char *shadowTargetNames[] = { "ShadowMap" };
 	unsigned shadowTargetDepths[] = { GL_DEPTH_COMPONENT };
-	A.makeFBO("SPass", 512, 512, 1, shadowTargetNames, shadowTargetDepths);
+	A.makeFBO("ShadowPass", 512, 512, 1, shadowTargetNames, shadowTargetDepths);
 	nsfw::Window::instance().setDelta();
 
 }
@@ -56,30 +56,30 @@ void SafeApplication::onStep()
 
 	//gpe->draw(nsfw::Window::instance().getTime(), camera.transform, camera.getProjection() * camera.getView());
 
-	fp.prep();
-	fp.draw(camera, obj1);
-	fp.draw(camera, obj2);
+	geoPass.prep();
+	geoPass.draw(camera, obj1);
+	geoPass.draw(camera, obj2);
 	//fp.draw(camera, gpe);
 	//GPUPARTICLES
 	if (!nsfw::Window::instance().getKey(GLFW_KEY_P))
 		gpe->draw(nsfw::Window::instance().getTime(), camera.transform, camera.getProjectionView());
-	fp.post();
+	geoPass.post();
 
 	if (!nsfw::Window::instance().getKey(GLFW_KEY_O))
 	{
-		sp.prep();
-		sp.draw(light, obj1);
-		sp.draw(light, obj2);
-		sp.post();
+		shadowPass.prep();
+		shadowPass.draw(light, obj1);
+		shadowPass.draw(light, obj2);
+		shadowPass.post();
 	}
 
-	gp.prep();
-	gp.draw(light, camera);
-	gp.post();
+	lightdPass.prep();
+	lightdPass.draw(light, camera);
+	lightdPass.post();
 
-	cp.prep();
-	cp.draw();
-	cp.post();
+	comPass.prep();
+	comPass.draw();
+	comPass.post();
 }
 
 void SafeApplication::onPlay()
@@ -102,16 +102,16 @@ void SafeApplication::onPlay()
 	obj2.mesh = "Spear";
 	obj2.tris = "Spear";
 
-	fp.shader = "Basic";
-	fp.fbo = "FPass";
+	geoPass.shader = "Geo";
+	geoPass.fbo = "GeoPass";
 
-	gp.shader = "Light";
-	gp.fbo = "GPass";
+	lightdPass.shader = "Light";
+	lightdPass.fbo = "DLightPass";
 
-	cp.shader = "Compo";
+	shadowPass.shader = "Shadow";
+	shadowPass.fbo = "ShadowPass";
 
-	sp.shader = "White";
-	sp.fbo = "SPass";
+	comPass.shader = "Compo";
 }
 
 void SafeApplication::onTerm()

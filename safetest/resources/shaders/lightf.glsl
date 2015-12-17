@@ -10,12 +10,11 @@ uniform sampler2D Normal; // GPass Normals
 uniform sampler2D Position; // GPass Normals
 uniform sampler2D Shadow; // GPass Normals
 
-uniform mat4 LightProjection;
-uniform mat4 LightView;
-
 uniform mat4 View;
 
-uniform mat4 textureSpaceOffset ;
+uniform mat4 LightProjection;
+uniform mat4 LightView;
+uniform mat4 texSpaceOffset ;
 
 void main()
 {
@@ -25,7 +24,8 @@ void main()
 	// shadowCoord isn't sampling correctly
 	//vec4 shadowCoord = textureSpaceOffset  * LightProjection * LightView * inverse(View) * position; // into worldspace
 	
-	mat4 lightViewProjection = textureSpaceOffset * LightProjection * LightView;
+	mat4 lightViewProjection = texSpaceOffset * LightProjection * LightView;
+
 	vec4 shadowCoord = lightViewProjection * inverse(View) * position;
 	
 	float d = max(0, dot(normal, vDirection));

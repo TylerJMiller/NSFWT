@@ -21,22 +21,22 @@
     <ClCompile Include="SafeApplication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GPass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CPass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FPass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SPass.cpp">
+    <ClCompile Include="GPUParticles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GPUParticles.cpp">
+    <ClCompile Include="GeoPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LightPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ComPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowPass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -53,20 +53,58 @@
     <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GPass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CPass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FPass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SPass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GPUParticles.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GeoPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LightPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ComPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\shaders\compf.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\shaders\compv.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\shaders\gpuParticlef.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\shaders\gpuParticleg.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\shaders\gpuParticleUpdatev.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\shaders\gpuParticlev.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\shaders\lightf.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\shaders\lightv.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\shaders\shadowf.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\shaders\shadowv.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\shaders\geof.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\shaders\geov.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

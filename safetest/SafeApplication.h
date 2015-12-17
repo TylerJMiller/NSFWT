@@ -128,10 +128,10 @@
 
 #include <nsfw.h>
 #include "Camera.h"
-#include "FPass.h"
-#include "GPass.h"
-#include "CPass.h"
-#include "SPass.h"
+#include "GeoPass.h"
+#include "LightPass.h"
+#include "ComPass.h"
+#include "ShadowPass.h"
 #include "LightDirection.h"
 #include "GameObject.h"
 #include "GPUParticles.h"
@@ -140,13 +140,13 @@ class SafeApplication : public nsfw::Application
 {
 	Camera camera;
 	GameObject obj1, obj2;
-	FPass fp;
-	CPass cp;
-	GPass gp;
+	GeoPass geoPass;
+	ComPass comPass;
+	LightPass lightdPass;
 	//GPU PARTICLES
 	ParticleEmitter *gpe;
 	//nsfw::nParticleEmitter *gpe;
-	SPass sp;
+	ShadowPass shadowPass;
 	LightDirection light;
 
 public:

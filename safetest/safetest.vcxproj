@@ -125,24 +125,38 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="GPass.cpp" />
-    <ClCompile Include="CPass.cpp" />
-    <ClCompile Include="FPass.cpp" />
+    <ClCompile Include="LightPass.cpp" />
+    <ClCompile Include="ComPass.cpp" />
+    <ClCompile Include="GeoPass.cpp" />
     <ClCompile Include="GPUParticles.cpp" />
     <ClCompile Include="SafeApplication.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="SPass.cpp" />
+    <ClCompile Include="ShadowPass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="GPass.h" />
-    <ClInclude Include="CPass.h" />
-    <ClInclude Include="FPass.h" />
+    <ClInclude Include="LightPass.h" />
+    <ClInclude Include="ComPass.h" />
+    <ClInclude Include="GeoPass.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GPUParticles.h" />
     <ClInclude Include="LightDirection.h" />
     <ClInclude Include="SafeApplication.h" />
-    <ClInclude Include="SPass.h" />
+    <ClInclude Include="ShadowPass.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\shaders\geof.glsl" />
+    <None Include="resources\shaders\geov.glsl" />
+    <None Include="resources\shaders\compf.glsl" />
+    <None Include="resources\shaders\compv.glsl" />
+    <None Include="resources\shaders\gpuParticlef.glsl" />
+    <None Include="resources\shaders\gpuParticleg.glsl" />
+    <None Include="resources\shaders\gpuParticleUpdatev.glsl" />
+    <None Include="resources\shaders\gpuParticlev.glsl" />
+    <None Include="resources\shaders\lightf.glsl" />
+    <None Include="resources\shaders\lightv.glsl" />
+    <None Include="resources\shaders\shadowf.glsl" />
+    <None Include="resources\shaders\shadowv.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -24,7 +24,7 @@
 #define TODO_D(A) TODO()
 #endif
 
-#elsif
+#else
 #define TODO()	  do{}while(0)
 #define TODO_D(A) do{}while(0)
 #endif
