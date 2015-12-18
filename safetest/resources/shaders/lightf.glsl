@@ -14,7 +14,9 @@ uniform mat4 View;
 
 uniform mat4 LightProjection;
 uniform mat4 LightView;
-uniform mat4 texSpaceOffset ;
+uniform mat4 texSpaceOffset;
+
+uniform mat4 lightVP;
 
 void main()
 {
@@ -36,10 +38,12 @@ void main()
 	
 	if(shadowMap.z < shadowCoord.z)
 	{
-		visibility = step(shadowMap.x, .01f);
+		visibility = step(shadowMap.z, .01f);
+		visibility = 0;
 	}
 
 	FragColor = d * (Color + visibility);
+	FragColor.a = 1.0f;
 	//FragColor = texture(Normal, vTexCoord.xy);
 	
 	

@@ -14,6 +14,6 @@ void main()
 {
 	vTexCoord = TexCoord;
 	
-	vDirection = LightDirection;
+	vDirection = View * LightDirection;
 	gl_Position = Position;
 }

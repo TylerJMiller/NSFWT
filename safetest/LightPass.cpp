@@ -42,10 +42,10 @@ void LightPass::draw(const LightDirection &l, const Camera &c)
 
 	//texSpaceOffset * LightProjection * LightView
 
-	mat4 textureSpaceOffset = mat4(.5f, 0, 0, 0,
-		0, .5f, 0, 0,
-		0, 0, .5f, 0,
-		.5f, .5f, .5f, 1.f);
+	mat4 textureSpaceOffset = mat4(.5f,  0,   0, 0,
+								    0, .5f,   0, 0,
+								    0,   0, .5f, 0,
+								   .5f,.5f, .5f, 1.f);
 	setUniform("texSpaceOffset", nsfw::UNIFORM::MAT4, glm::value_ptr(textureSpaceOffset));
 	mat4 lightVP = textureSpaceOffset * l.projection * l.view;
 	setUniform("lightVP", nsfw::UNIFORM::MAT4, glm::value_ptr(lightVP));

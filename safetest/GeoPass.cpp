@@ -7,6 +7,7 @@ void GeoPass::prep()
 	glUseProgram(*shader);
 
 	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_CULL_FACE);
 
 	glViewport(0, 0, 800, 600);
 	glClearColor(0.25f, 0.25f, 0.25f, 1);
@@ -17,6 +18,7 @@ void GeoPass::prep()
 
 void GeoPass::post()
 {
+	//glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
 	glUseProgram(0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
